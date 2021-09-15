@@ -11,25 +11,52 @@
 [0m[[0m[0mdebug[0m] [0m[0mInvalidated products: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0mExternal API changes: API Changes: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0mModified binary dependencies: Set()[0m
-[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(Main$package, hello)[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(main, Main)[0m
 [0m[[0m[0mdebug[0m] [0m[0mSources indirectly invalidated by:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	product: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0m	binary dep: Set()[0m
 [0m[[0m[0mdebug[0m] [0m[0m	external source: Set()[0m
-[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(Main$package, hello)[0m
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(main, Main)[0m
 [0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated sources:Set(${BASE}/src/main/scala/Main.scala)[0m
-[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Main$package, hello[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: main, Main[0m
 [0m[[0m[0mdebug[0m] [0m[0mcompilation cycle 1[0m
-[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mReturning already retrieved and compiled bridge: C:\Users\Jimmy Rosser\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-sbt-bridge\3.0.2\scala3-sbt-bridge-3.0.2.jar.[0m
-[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 731947a4 for Scala Compiler version 3.0.2[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/target/scala-3.0.2/classes ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mReturning already retrieved and compiled bridge: /Users/jimmyrosser/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.0.2/scala3-sbt-bridge-3.0.2.jar.[0m
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler b5aed7d for Scala Compiler version 3.0.2[0m
 [0m[[0m[0mdebug[0m] [0m[0m[zinc] The Scala compiler is invoked with:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m
-[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Jimmy Rosser\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-library_3\3.0.2\scala3-library_3-3.0.2.jar;C:\Users\Jimmy Rosser\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.6\scala-library-2.13.6.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/jimmyrosser/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.0.2/scala3-library_3-3.0.2.jar:/Users/jimmyrosser/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.6/scala-library-2.13.6.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m
-[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes[0m
-[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 0.3366853 s[0m
+[0m[[0m[0mdebug[0m] [0m[0m	/Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/target/scala-3.0.2/classes[0m
+[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 0.995205776 s[0m
 [0m[[0m[0mdebug[0m] [0m[0mdone compiling[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from main...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: main[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(main)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(main,ModifiedNames(changes = UsedName(Main,[Default]), UsedName(mainFunction,[Default]))) invalidates 1 classes due to The main has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(Main,[Default]), UsedName(mainFunction,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(main)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from Main...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Main[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(Main)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(Main,ModifiedNames(changes = UsedName($isInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(Main,[Default]), UsedName(equals,[Default]), UsedName(main,[Default]), UsedName(==,[Default]), UsedName(toString,[Default]), UsedName(notify,[Default]), UsedName(Object;init;,[Default]), UsedName(!=,[Default]), UsedName(Main;init;,[Default]), UsedName(getClass,[Default]), UsedName(hashCode,[Default]), UsedName(clone,[Default]), UsedName($asInstanceOf,[Default]), UsedName(##,[Default]), UsedName(notifyAll,[Default]), UsedName(wait,[Default]), UsedName(eq,[Default]), UsedName(synchronized,[Default]), UsedName(asInstanceOf,[Default]), UsedName(finalize,[Default]), UsedName(ne,[Default]))) invalidates 1 classes due to The Main has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName($isInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(Main,[Default]), UsedName(equals,[Default]), UsedName(main,[Default]), UsedName(==,[Default]), UsedName(toString,[Default]), UsedName(notify,[Default]), UsedName(Object;init;,[Default]), UsedName(!=,[Default]), UsedName(Main;init;,[Default]), UsedName(getClass,[Default]), UsedName(hashCode,[Default]), UsedName(clone,[Default]), UsedName($asInstanceOf,[Default]), UsedName(##,[Default]), UsedName(notifyAll,[Default]), UsedName(wait,[Default]), UsedName(eq,[Default]), UsedName(synchronized,[Default]), UsedName(asInstanceOf,[Default]), UsedName(finalize,[Default]), UsedName(ne,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(Main)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from mainFunction...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: mainFunction[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(mainFunction)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(mainFunction,ModifiedNames(changes = UsedName($isInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(mainFunction,[Default]), UsedName(equals,[Default]), UsedName(main,[Default]), UsedName(==,[Default]), UsedName(toString,[Default]), UsedName(notify,[Default]), UsedName(Object;init;,[Default]), UsedName(!=,[Default]), UsedName(getClass,[Default]), UsedName(hashCode,[Default]), UsedName(clone,[Default]), UsedName($asInstanceOf,[Default]), UsedName(##,[Default]), UsedName(notifyAll,[Default]), UsedName(wait,[Default]), UsedName(mainFunction;init;,[Default]), UsedName(eq,[Default]), UsedName(synchronized,[Default]), UsedName(asInstanceOf,[Default]), UsedName(finalize,[Default]), UsedName(ne,[Default]))) invalidates 1 classes due to The mainFunction has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName($isInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(mainFunction,[Default]), UsedName(equals,[Default]), UsedName(main,[Default]), UsedName(==,[Default]), UsedName(toString,[Default]), UsedName(notify,[Default]), UsedName(Object;init;,[Default]), UsedName(!=,[Default]), UsedName(getClass,[Default]), UsedName(hashCode,[Default]), UsedName(clone,[Default]), UsedName($asInstanceOf,[Default]), UsedName(##,[Default]), UsedName(notifyAll,[Default]), UsedName(wait,[Default]), UsedName(mainFunction;init;,[Default]), UsedName(eq,[Default]), UsedName(synchronized,[Default]), UsedName(asInstanceOf,[Default]), UsedName(finalize,[Default]), UsedName(ne,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(mainFunction)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
 [0m[[0m[0mdebug[0m] [0m[0mNew invalidations:[0m
 [0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: [0m
 [0m[[0m[0mdebug[0m] [0m[0mPreviously invalidated, but (transitively) depend on new invalidations:[0m

@@ -1,0 +1,4 @@
+[debug] [solitaire-build] Classpath dependencies List()
+[debug] [solitaire-build] Dependencies from configurations List()
+[debug] Bloop wrote the configuration of project 'solitaire-build' to '/Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/project/.bloop/solitaire-build.json'
+[success] Generated .bloop/solitaire-build.json

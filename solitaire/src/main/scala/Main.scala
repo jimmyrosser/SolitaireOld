@@ -1,8 +1,43 @@
 import scala.io.StdIn._
+import scala.collection.mutable.Stack
 
-@main 
-  def hello: Unit = {
+object main {
+  //Stacks for covered cards
+  var coveredStack2 = Stack[Card]()
+  var coveredStack3 = Stack[Card]()
+  var coveredStack4 = Stack[Card]()
+  var coveredStack5 = Stack[Card]()
+  var coveredStack6 = Stack[Card]()
+  var coveredStack7 = Stack[Card]()
+  //List of all coverd card stacks
+  var coveredStacks: List[Stack[Card]] = List(coveredStack2, coveredStack3, coveredStack4, coveredStack5, coveredStack6, coveredStack7)
+
+  //Stacks for uncovered cards
+  var uncoveredStack1 = Stack[Card]()
+  var uncoveredStack2 = Stack[Card]()
+  var uncoveredStack3 = Stack[Card]()
+  var uncoveredStack4 = Stack[Card]()
+  var uncoveredStack5 = Stack[Card]()
+  var uncoveredStack6 = Stack[Card]()
+  var uncoveredStack7 = Stack[Card]()
+  //List of all uncovered card stacks
+  var uncoveredStacks: List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
+
+  //Stacks for ace cards
+  var ace1 = Stack[Card]()
+  var ace2 = Stack[Card]()
+  var ace3 = Stack[Card]()
+  var ace4 = Stack[Card]()
+  //List of all ace card stacks
+  var aceStacks: List[Stack[Card]] = List(ace1, ace2, ace3, ace4)
+
+  var discard = Stack[Card]()
+  var draw = Stack[Card]()
+
+  @main
+  def mainFunction: Unit = {
     var deck = Deck.shuffleDeck(Deck.generateDeck)
+    dealGame(deck)
     printGameStartState(deck)
     playGame()
   }
@@ -413,6 +448,34 @@ import scala.io.StdIn._
     }
   }
 
+  /*
+  ///////////////////////////////////////////////////
+  -------------------- DEAL GAME --------------------
+  ///////////////////////////////////////////////////
+
+  This function deals cards out like one would in solitaire
+
+  */
+  def dealGame(deck: List[Card]) = {
+    var uncoveredCounter = 0
+    var coveredCounter = 6
+    for(i <- 1 to 28) {
+      println("adding cards to stacks")
+      //add 1 card to first uncovered stack, add 6 cards to next 6 coverd stacks
+      uncoveredStack1.push(deck(i))
+      deck = remove(deck(i))
+      for(j <- 2 to 7) {
+        coveredStacks(j).push(deck())
+      }
+      //add 1 card to second uncoverd stack, add 5 cards to next 5 covered stacks
+      //add 1 card to third uncoverd stack, add 4 cards to next 4 covered stacks
+      //add 1 card to fourth uncoverd stack, add 3 cards to next 3 covered stacks
+      //add 1 card to fifth uncoverd stack, add 2 cards to next 2 covered stacks
+      //add 1 card to sixth uncoverd stack, add 1 cards to next 1 covered stacks
+      //add 1 card to seventh uncoverd stack, add rest of cards to draw stack
+    }
+  }
+
   def playGame() = {
     var running = true
     println("What is you name?")
@@ -428,4 +491,5 @@ import scala.io.StdIn._
   }
 
 
-  def msg = "I was compiled by Scala 3. :)"
+  //def msg = "I was compiled by Scala 3. :)"
+}
