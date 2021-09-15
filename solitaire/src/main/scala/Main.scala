@@ -36,10 +36,30 @@ object main {
 
   @main
   def mainFunction: Unit = {
-    var deck = Deck.shuffleDeck(Deck.generateDeck)
-    dealGame(deck)
-    printGameStartState(deck)
-    playGame()
+    val deck = Deck.generateDeck
+    var deckStack: Stack[Card] = Stack[Card]()
+    deckStack.pushAll(deck)
+    println("generated deck")
+    var testCardList = List[List[String]]()
+    for(i <- deck) {
+      testCardList = testCardList :+ convertCardtoASCII(i).split(",").toList
+    }
+    var testCards = reformatCardList(testCardList)
+    for(i <- testCards) {
+      print(i)
+    }
+    //printCard(testCards)
+
+    dealGame(deckStack)
+    println("First stack: " + uncoveredStack1.top.value + " of " + uncoveredStack1.top.suit)
+    println("Second stack: " + uncoveredStack2.top.value + " of " + uncoveredStack2.top.suit)
+    println("Third stack: " + uncoveredStack3.top.value + " of " + uncoveredStack3.top.suit)
+    println("Fourth stack: " + uncoveredStack4.top.value + " of " + uncoveredStack4.top.suit)
+    println("Fifth stack: " + uncoveredStack5.top.value + " of " + uncoveredStack5.top.suit)
+    println("Sixth stack: " + uncoveredStack6.top.value + " of " + uncoveredStack6.top.suit)
+    println("Seventh stack: " + uncoveredStack7.top.value + " of " + uncoveredStack7.top.suit)
+    //printGameStartState(deck)
+    //playGame()
   }
 
   /*
@@ -159,7 +179,9 @@ object main {
   an ASCII representation of that card
 
   */
-  def printCard(value: Int, suit: Suit.Value):String = {
+  def convertCardtoASCII(card: Card):String = {
+    val value = card.value
+    val suit = card.suit
     val shortSuit = suit.toString.head
     if(suit == Suit.Hearts) {
       if(value != 10) {
@@ -195,7 +217,7 @@ object main {
         "-------------")
       }
       else {
-          return("ERROR IN PRINTCARD HEARTS ELSE")
+          return("ERROR IN convertCardtoASCII HEARTS ELSE")
       }
     }
     else if(suit == Suit.Diamonds) {
@@ -232,7 +254,7 @@ object main {
         "-------------")
       }
       else {
-          return("ERROR IN PRINTCARD DIAMONDS ELSE")
+          return("ERROR IN convertCardtoASCII DIAMONDS ELSE")
       }
     }
     else if(suit == Suit.Spades) {
@@ -269,7 +291,7 @@ object main {
         "-------------")
       }
       else {
-          return("ERROR IN PRINTCARD SPADES ELSE")
+          return("ERROR IN convertCardtoASCII SPADES ELSE")
       }
     }
     else if(suit == Suit.Clubs) {
@@ -306,11 +328,17 @@ object main {
         "-------------")
       }
       else {
-          return("ERROR IN PRINTCARD CLUBS ELSE")
+          return("ERROR IN convertCardtoASCII CLUBS ELSE")
       }
     }
     else {
-      return("ERROR IN PRINTCARD LAST ELSE")
+      return("ERROR IN convertCardtoASCII LAST ELSE")
+    }
+  }
+
+  def printCard(card: List[String]) = {
+    for(i <- card) {
+      println(i)
     }
   }
 
@@ -323,7 +351,7 @@ object main {
   so that the cards can be printed horizontally
 
   */
-  def printCardList(cards: List[List[String]]):List[String] = {
+  def reformatCardList(cards: List[List[String]]):List[String] = {
     var returnLine = List[String]()
     var rowCounter = 0
     while(rowCounter < 13) {
@@ -399,7 +427,7 @@ object main {
     for(i <- 1 to 4) {
       emptyCardList = emptyCardList :+ printEmptyCard().split(",").toList
     }
-    var emptyCards = printCardList(emptyCardList)
+    var emptyCards = reformatCardList(emptyCardList)
     for(i <- emptyCards) {
       print(i)
     }
@@ -412,20 +440,28 @@ object main {
     println()
 
     //Test cards to check printing functionality
-    val card1:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card2:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card3:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card4:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card5:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card6:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
-    val card7:List[String] = printCard(deck.head.value, deck.head.suit).split(",").toList
+    val card1:List[String] = convertCardtoASCII(deck(0)).split(",").toList
+    val card2:List[String] = convertCardtoASCII(deck(1)).split(",").toList
+    val card3:List[String] = convertCardtoASCII(deck(2)).split(",").toList
+    val card4:List[String] = convertCardtoASCII(deck(3)).split(",").toList
+    val card5:List[String] = convertCardtoASCII(deck(4)).split(",").toList
+    val card6:List[String] = convertCardtoASCII(deck(5)).split(",").toList
+    val card7:List[String] = convertCardtoASCII(deck(6)).split(",").toList
 
-    //Makes a list of all the cards that need to be printed in the main section of the game
-    val cardList:List[List[String]] = List(card1, card2, card3, card4, card5, card6, card7)
-    var cards = printCardList(cardList)
+    //Get cards from stacks and print them
+    var cardList:List[List[String]] = List(card1, card2, card3, card4, card5, card6, card7)
+    var cards = reformatCardList(cardList)
     for(i <- cards) {
       print(i)
     }
+    /*for(i <- 1 to 7) {
+      cardList = cardList :+ convertCardtoASCII(coveredStacks(i).top.value, coveredStacks(i).top.suit).split(",").toList
+    }
+    var cards = reformatCardList(cardList)
+    for(i <- cards) {
+      print(i)
+    }*/
+
 
     //Makes space between the main section and the draw section
     println()
@@ -441,8 +477,8 @@ object main {
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
         :+ printEmptyCard().split(",").toList 
-        :+ printCard(deck.head.value, deck.head.suit).split(",").toList
-    var drawCards = printCardList(drawCardsList)
+        :+ convertCardtoASCII(deck.head).split(",").toList
+    var drawCards = reformatCardList(drawCardsList)
     for(i <- drawCards) {
       print(i)
     }
@@ -456,24 +492,45 @@ object main {
   This function deals cards out like one would in solitaire
 
   */
-  def dealGame(deck: List[Card]) = {
-    var uncoveredCounter = 0
-    var coveredCounter = 6
-    for(i <- 1 to 28) {
+  def dealGame(deck: Stack[Card]) = {
       println("adding cards to stacks")
       //add 1 card to first uncovered stack, add 6 cards to next 6 coverd stacks
-      uncoveredStack1.push(deck(i))
-      deck = remove(deck(i))
-      for(j <- 2 to 7) {
-        coveredStacks(j).push(deck())
+      uncoveredStack1.push(deck.pop())
+      for(i <- 0 to 5) {
+        coveredStacks(i).push(deck.pop())
       }
+
       //add 1 card to second uncoverd stack, add 5 cards to next 5 covered stacks
+      uncoveredStack2.push(deck.pop())
+      for(i <- 1 to 5) {
+        coveredStacks(i).push(deck.pop())
+      }
+
       //add 1 card to third uncoverd stack, add 4 cards to next 4 covered stacks
+      uncoveredStack3.push(deck.pop())
+      for(i <- 2 to 5) {
+        coveredStacks(i).push(deck.pop())
+      }
+
       //add 1 card to fourth uncoverd stack, add 3 cards to next 3 covered stacks
+      uncoveredStack4.push(deck.pop())
+      for(i <- 3 to 5) {
+        coveredStacks(i).push(deck.pop())
+      }
       //add 1 card to fifth uncoverd stack, add 2 cards to next 2 covered stacks
+      uncoveredStack5.push(deck.pop())
+      for(i <- 4 to 5) {
+        coveredStacks(i).push(deck.pop())
+      }
       //add 1 card to sixth uncoverd stack, add 1 cards to next 1 covered stacks
+      uncoveredStack6.push(deck.pop())
+      coveredStack7.push(deck.pop())
       //add 1 card to seventh uncoverd stack, add rest of cards to draw stack
-    }
+      uncoveredStack7.push(deck.pop())
+  }
+
+  def getDealtCards() = {
+    var deck: List[List[String]] = List[List[String]]()
   }
 
   def playGame() = {

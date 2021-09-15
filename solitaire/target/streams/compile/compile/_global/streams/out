@@ -1,6 +1,10 @@
-[0m[[0m[33mwarn[0m] [0m[0m[33m-- Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:37:2 [0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m37 |[0m  @main[0m
-[0m[[0m[33mwarn[0m] [0m[0m   |  [33m^[0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m   |[33mclass[0m [35mMain[0m differs only in case from [33mobject[0m [35mmain[0m. Such classes will overwrite one another on case-insensitive filesystems.[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[31merror[0m] [0m[0m[31m-- [E006] Not Found Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:45:37 [0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m45 |[0m    [33mvar[0m [36mtestCards[0m = reformatCardList(testcardList)[0m
+[0m[[0m[31merror[0m] [0m[0m   |                                     [31m^^^^^^^^^^^^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m   |                                     Not found: testcardList[0m
+[0m[[0m[31merror[0m] [0m[0m[31m-- [E006] Not Found Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:46:13 [0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m46 |[0m    [33mfor[0m(i <- testcards) {[0m
+[0m[[0m[31merror[0m] [0m[0m   |             [31m^^^^^^^^^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m   |             Not found: testcards[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
