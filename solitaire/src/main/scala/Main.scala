@@ -24,22 +24,25 @@ object main {
   var uncoveredStacks: List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
 
   //Stacks for ace cards
-  var ace1 = Stack[Card]()
-  var ace2 = Stack[Card]()
-  var ace3 = Stack[Card]()
-  var ace4 = Stack[Card]()
+  var ace1Stack = Stack[Card]()
+  var ace2Stack = Stack[Card]()
+  var ace3Stack = Stack[Card]()
+  var ace4Stack = Stack[Card]()
   //List of all ace card stacks
-  var aceStacks: List[Stack[Card]] = List(ace1, ace2, ace3, ace4)
+  var aceStacks: List[Stack[Card]] = List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
 
-  var discard = Stack[Card]()
-  var draw = Stack[Card]()
+  var discardStack = Stack[Card]()
+  var drawStack = Stack[Card]()
+  var cardsToFlip = 1
+
+  //Generate and shuffle the deck, then push it all to a stack
+  val deck = Deck.shuffleDeck(Deck.generateDeck)
+  var deckStack: Stack[Card] = Stack[Card]()
+  deckStack.pushAll(deck)
 
   @main
   def mainFunction: Unit = {
-    val deck = Deck.generateDeck
-    var deckStack: Stack[Card] = Stack[Card]()
-    deckStack.pushAll(deck)
-    println("generated deck")
+    /*println("generated deck")
     var testCardList = List[List[String]]()
     for(i <- deck) {
       testCardList = testCardList :+ convertCardtoASCII(i).split(",").toList
@@ -47,19 +50,20 @@ object main {
     var testCards = reformatCardList(testCardList)
     for(i <- testCards) {
       print(i)
-    }
+    }*/
     //printCard(testCards)
 
-    dealGame(deckStack)
-    println("First stack: " + uncoveredStack1.top.value + " of " + uncoveredStack1.top.suit)
+    dealGame()
+    /*println("First stack: " + uncoveredStack1.top.value + " of " + uncoveredStack1.top.suit)
     println("Second stack: " + uncoveredStack2.top.value + " of " + uncoveredStack2.top.suit)
     println("Third stack: " + uncoveredStack3.top.value + " of " + uncoveredStack3.top.suit)
     println("Fourth stack: " + uncoveredStack4.top.value + " of " + uncoveredStack4.top.suit)
     println("Fifth stack: " + uncoveredStack5.top.value + " of " + uncoveredStack5.top.suit)
     println("Sixth stack: " + uncoveredStack6.top.value + " of " + uncoveredStack6.top.suit)
     println("Seventh stack: " + uncoveredStack7.top.value + " of " + uncoveredStack7.top.suit)
-    //printGameStartState(deck)
-    //playGame()
+    */
+    printGame()
+    playGame()
   }
 
   /*
@@ -179,7 +183,7 @@ object main {
   an ASCII representation of that card
 
   */
-  def convertCardtoASCII(card: Card):String = {
+  def convertCardToASCII(card: Card):String = {
     val value = card.value
     val suit = card.suit
     val shortSuit = suit.toString.head
@@ -420,15 +424,36 @@ object main {
   This function prints the beginning state of the game
 
   */
-  def printGameStartState(deck: List[Card]) = {
+  def printGame() = {
 
     //Makes a list of the ace spots above the main section of the game
-    var emptyCardList = List[List[String]]()
-    for(i <- 1 to 4) {
-      emptyCardList = emptyCardList :+ printEmptyCard().split(",").toList
+    var aceCardList = List[List[String]]()
+    if(ace1Stack.isEmpty) {
+      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
     }
-    var emptyCards = reformatCardList(emptyCardList)
-    for(i <- emptyCards) {
+    else {
+      aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
+    }
+    if(ace2Stack.isEmpty) {
+      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
+    }
+    else {
+      aceCardList = aceCardList :+ convertCardToASCII(ace2Stack.top).split(",").toList
+    }
+    if(ace3Stack.isEmpty) {
+      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
+    }
+    else {
+      aceCardList = aceCardList :+ convertCardToASCII(ace3Stack.top).split(",").toList
+    }
+    if(ace4Stack.isEmpty) {
+      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
+    }
+    else {
+      aceCardList = aceCardList :+ convertCardToASCII(ace4Stack.top).split(",").toList
+    }
+    var aceCards = reformatCardList(aceCardList)
+    for(i <- aceCards) {
       print(i)
     }
 
@@ -440,16 +465,23 @@ object main {
     println()
 
     //Test cards to check printing functionality
-    val card1:List[String] = convertCardtoASCII(deck(0)).split(",").toList
+    /*val card1:List[String] = convertCardtoASCII(deck(0)).split(",").toList
     val card2:List[String] = convertCardtoASCII(deck(1)).split(",").toList
     val card3:List[String] = convertCardtoASCII(deck(2)).split(",").toList
     val card4:List[String] = convertCardtoASCII(deck(3)).split(",").toList
     val card5:List[String] = convertCardtoASCII(deck(4)).split(",").toList
     val card6:List[String] = convertCardtoASCII(deck(5)).split(",").toList
-    val card7:List[String] = convertCardtoASCII(deck(6)).split(",").toList
+    val card7:List[String] = convertCardtoASCII(deck(6)).split(",").toList*/
 
     //Get cards from stacks and print them
-    var cardList:List[List[String]] = List(card1, card2, card3, card4, card5, card6, card7)
+    var cardList:List[List[String]] = List(
+        convertCardToASCII(uncoveredStack1.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack2.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack3.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack4.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack5.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack6.top).split(",").toList, 
+        convertCardToASCII(uncoveredStack7.top).split(",").toList)
     var cards = reformatCardList(cardList)
     for(i <- cards) {
       print(i)
@@ -475,9 +507,19 @@ object main {
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
-        :+ printBlankCard().split(",").toList 
-        :+ printEmptyCard().split(",").toList 
-        :+ convertCardtoASCII(deck.head).split(",").toList
+        :+ printBlankCard().split(",").toList
+    if(discardStack.isEmpty) {
+      drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
+    }
+    else {
+      drawCardsList = drawCardsList :+ convertCardToASCII(discardStack.top).split(",").toList
+    }
+    if(drawStack.isEmpty) {
+      drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
+    }
+    else {
+      drawCardsList = drawCardsList :+ convertCardToASCII(drawStack.top).split(",").toList
+    }
     var drawCards = reformatCardList(drawCardsList)
     for(i <- drawCards) {
       print(i)
@@ -492,58 +534,78 @@ object main {
   This function deals cards out like one would in solitaire
 
   */
-  def dealGame(deck: Stack[Card]) = {
+  def dealGame() = {
       println("adding cards to stacks")
       //add 1 card to first uncovered stack, add 6 cards to next 6 coverd stacks
-      uncoveredStack1.push(deck.pop())
+      uncoveredStack1.push(deckStack.pop())
       for(i <- 0 to 5) {
-        coveredStacks(i).push(deck.pop())
+        coveredStacks(i).push(deckStack.pop())
       }
 
       //add 1 card to second uncoverd stack, add 5 cards to next 5 covered stacks
-      uncoveredStack2.push(deck.pop())
+      uncoveredStack2.push(deckStack.pop())
       for(i <- 1 to 5) {
-        coveredStacks(i).push(deck.pop())
+        coveredStacks(i).push(deckStack.pop())
       }
 
       //add 1 card to third uncoverd stack, add 4 cards to next 4 covered stacks
-      uncoveredStack3.push(deck.pop())
+      uncoveredStack3.push(deckStack.pop())
       for(i <- 2 to 5) {
-        coveredStacks(i).push(deck.pop())
+        coveredStacks(i).push(deckStack.pop())
       }
 
       //add 1 card to fourth uncoverd stack, add 3 cards to next 3 covered stacks
-      uncoveredStack4.push(deck.pop())
+      uncoveredStack4.push(deckStack.pop())
       for(i <- 3 to 5) {
-        coveredStacks(i).push(deck.pop())
+        coveredStacks(i).push(deckStack.pop())
       }
       //add 1 card to fifth uncoverd stack, add 2 cards to next 2 covered stacks
-      uncoveredStack5.push(deck.pop())
+      uncoveredStack5.push(deckStack.pop())
       for(i <- 4 to 5) {
-        coveredStacks(i).push(deck.pop())
+        coveredStacks(i).push(deckStack.pop())
       }
       //add 1 card to sixth uncoverd stack, add 1 cards to next 1 covered stacks
-      uncoveredStack6.push(deck.pop())
-      coveredStack7.push(deck.pop())
+      uncoveredStack6.push(deckStack.pop())
+      coveredStack7.push(deckStack.pop())
       //add 1 card to seventh uncoverd stack, add rest of cards to draw stack
-      uncoveredStack7.push(deck.pop())
-  }
-
-  def getDealtCards() = {
-    var deck: List[List[String]] = List[List[String]]()
+      uncoveredStack7.push(deckStack.pop())
+      drawStack.pushAll(deckStack)
+      println("drawStack size: " + drawStack.size)
   }
 
   def playGame() = {
     var running = true
     println("What is you name?")
     var name = readLine()
-    println(s"Hello, $name!")
+    println(s"Hello, $name! Welsome to Solitaire")
+    println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
+    var flipInput = readLine()
+    if(flipInput == "3") {
+      cardsToFlip = 3
+    }
+    else if(flipInput != "1") {
+      println("Error with flip count handling")
+    }
+    println("Flip Count: " + cardsToFlip)
     while(running) {
       var input = readLine()
+      handleInput(input)
       if(input.toLowerCase == "q") {
         println(s"Goodbye $name!")
         running = false
       }
+    }
+  }
+
+  def handleInput(line: String) = {
+    if(line == "hello") {
+      println("hola")
+    }
+    else if(line.toLowerCase == "draw")
+    {
+      discardStack.push(drawStack.pop())
+      println("popped and pushed")
+      printGame()
     }
   }
 
