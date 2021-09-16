@@ -1,3 +1,7 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(12a489ae-2d78-43f4-bb9f-4eafd6de9c9f), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@66dd04e2, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 2 Scala sources to C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes ...[0m
 [0m[[0m[31merror[0m] [0m[0m[31m-- [E007] Type Mismatch Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\GameState.scala:87:8 [0m[0m
 [0m[[0m[31merror[0m] [0m[0m[31m87 |[0m        uncoveredStack7[0m
 [0m[[0m[31merror[0m] [0m[0m   |        [31m^^^^^^^^^^^^^^^[0m[0m
@@ -377,3 +381,6 @@
 [0m[[0m[31merror[0m] [0m[0m    |      value discardStack is not a member of object GameState[0m
 [0m[[0m[31merror[0m] [0m[0m77 errors found[0m
 [0m[[0m[31merror[0m] [0m[0m77 errors found[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mcompileIncremental[0m) Compilation failed[0m
+[0m[[0m[31merror[0m] [0m[0mTotal time: 1 s, completed Sep 15, 2021, 11:20:19 PM[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

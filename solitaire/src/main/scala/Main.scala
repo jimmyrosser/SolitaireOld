@@ -514,12 +514,7 @@ object main {
     else {
       drawCardsList = drawCardsList :+ convertCardToASCII(discardStack.top).split(",").toList
     }
-    if(drawStack.isEmpty) {
-      drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
-    }
-    else {
-      drawCardsList = drawCardsList :+ convertCardToASCII(drawStack.top).split(",").toList
-    }
+    drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
     var drawCards = reformatCardList(drawCardsList)
     for(i <- drawCards) {
       print(i)
@@ -577,7 +572,7 @@ object main {
     var running = true
     println("What is you name?")
     var name = readLine()
-    println(s"Hello, $name! Welsome to Solitaire")
+    println(s"Hello, $name! \nWelcome to Solitaire")
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
     if(flipInput == "3") {
@@ -594,9 +589,19 @@ object main {
         println(s"Goodbye $name!")
         running = false
       }
+      else {
+        println("That is an invalid command. Type \"help\" for a list and description of valid commands")
+      }
     }
   }
 
+
+  //Commands
+  /*
+    draw: draws a new card from the deck and places it face up in the discard deck to be used
+    move VS to (AX(1,2,3,4) or SX(1,2,3,4,5,6,7)): moves a specific card to the top of a different stack
+    undo: undoes the last move made
+  */
   def handleInput(line: String) = {
     if(line == "hello") {
       println("hola")
@@ -607,7 +612,12 @@ object main {
       println("popped and pushed")
       printGame()
     }
+    else if(line.toLowerCase().contains("move")) {
+
+    }
   }
+  //TODO: make a move checker that verifys that a move is valid before it is made
+  //TODO: maken a function that finds a card and determines if it is on top
 
 
   //def msg = "I was compiled by Scala 3. :)"
