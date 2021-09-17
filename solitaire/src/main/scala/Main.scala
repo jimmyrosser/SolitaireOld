@@ -570,6 +570,7 @@ object main {
       drawStack.pushAll(deckStack)
       println("drawStack size: " + drawStack.size)
       allStacks = uncoveredStacks ++ aceStacks
+      println("allstacks length after creation: " + allStacks.length)
   }
 
   def playGame() = {
@@ -633,11 +634,11 @@ object main {
     var foundAndNum = (false, -1)
     var counter = 0
     while(counter < 11) {
-      println("allstacks length: " + allStacks.size)
+      println("allstacks length: " + allStacks.length)
       val current = allStacks(counter).top
       if(current.value == value && current.suit.toString.toLowerCase == suit) {
         foundAndNum = (true, counter)
-        counter = 11
+        counter += 1
       }
       else {
         counter += 1
