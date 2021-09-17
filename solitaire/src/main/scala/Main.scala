@@ -177,6 +177,51 @@ object main {
     }
   }
 
+  def convertValueFromCard(value: String): Int = {
+    if(value.toLowerCase == "a") {
+      1
+    }
+    else if (value.toLowerCase == "2") {
+      2
+    }
+    else if (value.toLowerCase== "3") {
+      3
+    }
+    else if (value.toLowerCase == "4") {
+      4
+    }
+    else if (value.toLowerCase == "5") {
+      5
+    }
+    else if (value.toLowerCase == "6") {
+      6
+    }
+    else if (value.toLowerCase == "7") {
+      7
+    }
+    else if (value.toLowerCase == "8") {
+      8
+    }
+    else if (value.toLowerCase == "9") {
+      9
+    }
+    else if (value.toLowerCase == "10") {
+      10
+    }
+    else if (value.toLowerCase == "j") {
+      11
+    }
+    else if (value.toLowerCase == "q") {
+      12
+    }
+    else if (value.toLowerCase == "k") {
+      13
+    }
+    else {
+      "ERROR"
+    }
+  }
+
   /*
   ////////////////////////////////////////////////////
   -------------------- PRINT CARD --------------------
@@ -653,7 +698,7 @@ object main {
     foundAndNum
   }
 
-  def validatecard(value: Int, suit: String): Boolean = {
+  def validateCard(value: Int, suit: String): Boolean = {
     var isCard = true
     if(value < 0 || value > 14) {
       isCard = false
@@ -671,6 +716,10 @@ object main {
     else {
       false
     }
+  }
+
+  def getStackFromTopCard(category: String, value: Int): Stack[Card] = {
+    
   }
 
 
@@ -700,13 +749,20 @@ object main {
       var stackToMoveToColumn = ""
       //Add check for making sure this is a valid card
       //split into 2 parts, check length of string to determine if it is a 10
-      if(cardToMove.size == 3) {
+
+      //TODO: Write function to convert A, K, Q, J, to value
+      if(cardToMove.size == 3 && validateCard((cardToMove(0)+cardToMove(1)), cardToMove(2).toString)) {
         cardToMoveValue = cardToMove(0) + cardToMove(1).toString
         cardToMoveSuit = cardToMove(2).toString
+        println("Card Value: " + cardToMoveValue)
+        println("Card Suit: " + cardToMoveSuit)
       }
       else {
+        if (validateCard(cardToMove(0), cardToMove(1).toString))
         cardToMoveValue = cardToMove(0).toString
         cardToMoveSuit = cardToMove(1).toString
+        println("Card Value: " + cardToMoveValue)
+        println("Card Suit: " + cardToMoveSuit)
       }
       stackToMoveToRow = stackToMoveTo(0).toString
       stackToMoveToColumn = stackToMoveTo(1).toString

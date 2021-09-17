@@ -1,5 +1,5 @@
-[0m[[0m[33mwarn[0m] [0m[0m[33m-- Deprecation Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:695:40 [0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m695 |[0m        cardToMoveValue = cardToMove([31m0[0m) + cardToMove([31m1[0m).toString[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m-- Deprecation Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:704:40 [0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m704 |[0m        cardToMoveValue = cardToMove([31m0[0m) + cardToMove([31m1[0m).toString[0m
 [0m[[0m[33mwarn[0m] [0m[0m    |                          [33m^^^^^^^^^^^^^^^[0m[0m
 [0m[[0m[33mwarn[0m] [0m[0m    |[33mmethod[0m [35m+[0m in [33mclass[0m [35mChar[0m is deprecated since 2.13.0: Adding a number and a String is deprecated. Use the string interpolation `s"$num$str"`[0m
 [0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
