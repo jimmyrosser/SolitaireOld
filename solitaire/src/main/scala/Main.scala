@@ -31,12 +31,15 @@ object main {
   //List of all ace card stacks
   var aceStacks: List[Stack[Card]] = List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
 
+  //All stacks where playable cards could be/moves could be made
+  var allStacks = List[Stack[Card]]()
+
   var discardStack = Stack[Card]()
   var drawStack = Stack[Card]()
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = Deck.shuffleDeck(Deck.generateDeck)
+  val deck = /*Deck.shuffleDeck*/(Deck.generateDeck)
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
 
@@ -566,6 +569,7 @@ object main {
       uncoveredStack7.push(deckStack.pop())
       drawStack.pushAll(deckStack)
       println("drawStack size: " + drawStack.size)
+      allStacks = uncoveredStacks ++ aceStacks
   }
 
   def playGame() = {
@@ -573,6 +577,8 @@ object main {
     println("What is you name?")
     var name = readLine()
     println(s"Hello, $name! \nWelcome to Solitaire")
+    val cardLoc = findCard(1, "s")
+    println("card location: " + cardLoc)
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
     if(flipInput == "3") {
@@ -589,10 +595,66 @@ object main {
         println(s"Goodbye $name!")
         running = false
       }
-      else {
-        println("That is an invalid command. Type \"help\" for a list and description of valid commands")
+    }
+  }
+
+  /*def findCard(value: Int, suit: String): Int = {
+    //Check solitaire stacks
+    var found = false
+    var uncoveredStackCounter = 0
+    for(stack <- uncoveredStacks) {
+      if(value == stack.top.value && suit == stack.top.suit.toString) {
+        return(uncoveredStackCounter)
+        found = true
+      }
+      uncoveredStackCounter += 1
+    }
+
+    var aceStackCounter = 0
+    if(!found) {
+      for (stack <- aceStacks) {
+        if(value == stack.top.value && suit == stack.top.suit.toString) {
+          return(aceStackCounter)
+          found = true
+        }
+        else {
+
+        }
+        aceStackCounter += 1
+        aceStackCounter
       }
     }
+    else {
+      return(uncoveredStackCounter)
+    }
+  }*/
+
+  def findCard(value: Int, suit: String): (Boolean, Int) = {
+    var foundAndNum = (false, -1)
+    var counter = 0
+    while(counter < 11) {
+      println("allstacks length: " + allStacks.size)
+      val current = allStacks(counter).top
+      if(current.value == value && current.suit.toString.toLowerCase == suit) {
+        foundAndNum = (true, counter)
+        counter = 11
+      }
+      else {
+        counter += 1
+      }
+    }
+    foundAndNum
+  }
+
+  def validatecard(value: Int, suit: String): Boolean = {
+    var isCard = true
+    if(value < 0 || value > 14) {
+      isCard = false
+    }
+    if(suit.toLowerCase != "s" || suit.toLowerCase != "c" || suit.toLowerCase != "d" || suit.toLowerCase != "h") {
+      isCard = false
+    }
+    isCard
   }
 
 
@@ -613,7 +675,31 @@ object main {
       printGame()
     }
     else if(line.toLowerCase().contains("move")) {
+      val lineSubstring = line.split(" ")
+      val cardToMove = lineSubstring(1)
+      var cardToMoveSuit = ""
+      var cardToMoveValue = ""
+      val stackToMoveTo = lineSubstring(3)
+      var stackToMoveToRow = ""
+      var stackToMoveToColumn = ""
+      //Add check for making sure this is a valid card
+      //split into 2 parts, check length of string to determine if it is a 10
+      if(cardToMove.size == 3) {
+        cardToMoveValue = cardToMove(0) + cardToMove(1).toString
+        cardToMoveSuit = cardToMove(2).toString
+      }
+      else {
+        cardToMoveValue = cardToMove(0).toString
+        cardToMoveSuit = cardToMove(1).toString
+      }
+      stackToMoveToRow = stackToMoveTo(0).toString
+      stackToMoveToColumn = stackToMoveTo(1).toString
 
+      //Add check for making sure this is a valid card
+
+    }
+    else {
+      println("That is an invalid command. Type \"help\" for a list and description of valid commands")
     }
   }
   //TODO: make a move checker that verifys that a move is valid before it is made
