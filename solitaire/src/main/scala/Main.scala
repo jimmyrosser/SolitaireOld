@@ -634,11 +634,17 @@ object main {
     var foundAndNum = (false, -1)
     var counter = 0
     while(counter < 11) {
-      println("allstacks length: " + allStacks.length)
-      val current = allStacks(counter).top
-      if(current.value == value && current.suit.toString.toLowerCase == suit) {
-        foundAndNum = (true, counter)
-        counter += 1
+      if(!allStacks(counter).isEmpty) {
+        println("allstacks cards: " + allStacks(counter).top.value + allStacks(counter).top.suit)
+        val current = allStacks(counter).top
+        println("allatscks length: " + allStacks.length)
+        if(current.value == value && current.suit.toString.toLowerCase == suit) {
+          foundAndNum = (true, counter)
+          counter += 1
+        }
+        else {
+          counter += 1
+        }
       }
       else {
         counter += 1
@@ -656,6 +662,15 @@ object main {
       isCard = false
     }
     isCard
+  }
+
+  def validateStack(category: String, value: Int):Boolean = {
+    if((category.toLowerCase == "a" || category.toLowerCase == "s") && (value > 0 && value < 14)) {
+      true
+    }
+    else {
+      false
+    }
   }
 
 
