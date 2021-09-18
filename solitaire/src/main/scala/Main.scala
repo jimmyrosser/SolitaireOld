@@ -42,6 +42,8 @@ object main {
   val deck = /*Deck.shuffleDeck*/(Deck.generateDeck)
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
+  var allStacksAndDrawStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
+      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
 
   @main
   def mainFunction: Unit = {
@@ -181,6 +183,9 @@ object main {
     if(value.toLowerCase == "a") {
       1
     }
+    else if(value.toLowerCase == "1") {
+      1
+    }
     else if (value.toLowerCase == "2") {
       2
     }
@@ -216,6 +221,24 @@ object main {
     }
     else if (value.toLowerCase == "k") {
       13
+    }
+    else {
+      -1
+    }
+  }
+
+  def convertSuitForCard(suit: String): String = {
+    if(suit.toLowerCase == "s") {
+      "spades"
+    }
+    else if(suit.toLowerCase == "h") {
+      "hearts"
+    }
+    else if(suit.toLowerCase == "d") {
+      "diamonds"
+    }
+    else if(suit.toLowerCase == "c") {
+      "clubs"
     }
     else {
       "ERROR"
@@ -616,6 +639,8 @@ object main {
       println("drawStack size: " + drawStack.size)
       allStacks = uncoveredStacks ++ aceStacks
       println("allstacks length after creation: " + allStacks.length)
+      allStacksAndDrawStack = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
+      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
   }
 
   def playGame() = {
@@ -676,14 +701,18 @@ object main {
   }*/
 
   def findCard(value: Int, suit: String): (Boolean, Int) = {
+    println("findcard value: " + value)
+    println("findcard suit: " + convertSuitForCard(suit))
     var foundAndNum = (false, -1)
     var counter = 0
-    while(counter < 11) {
-      if(!allStacks(counter).isEmpty) {
-        println("allstacks cards: " + allStacks(counter).top.value + allStacks(counter).top.suit)
-        val current = allStacks(counter).top
-        println("allatscks length: " + allStacks.length)
-        if(current.value == value && current.suit.toString.toLowerCase == suit) {
+    while(counter < 12) {
+      if(!allStacksAndDrawStack(counter).isEmpty) {
+        println("allstacks cards: " + allStacksAndDrawStack(counter).top.value + allStacksAndDrawStack(counter).top.suit)
+        val current = allStacksAndDrawStack(counter).top
+        println("allatscks length: " + allStacksAndDrawStack.length)
+        println("current value: " + current.value)
+        println("current suit: " + current.suit)
+        if(current.value == value && current.suit.toString.toLowerCase == convertSuitForCard(suit)) {
           foundAndNum = (true, counter)
           counter += 1
         }
@@ -703,14 +732,16 @@ object main {
     if(value < 0 || value > 14) {
       isCard = false
     }
-    if(suit.toLowerCase != "s" || suit.toLowerCase != "c" || suit.toLowerCase != "d" || suit.toLowerCase != "h") {
+    if(suit.toLowerCase != "s" && suit.toLowerCase != "c" && suit.toLowerCase != "d" && suit.toLowerCase != "h") {
       isCard = false
     }
     isCard
   }
 
   def validateStack(category: String, value: Int):Boolean = {
-    if((category.toLowerCase == "a" || category.toLowerCase == "s") && (value > 0 && value < 14)) {
+    println("category: " + category)
+    println("value: " + value)
+    if((category.toLowerCase == "a" || category.toLowerCase == "s") && (value > 0 && value < 8)) {
       true
     }
     else {
@@ -719,7 +750,35 @@ object main {
   }
 
   def getStackFromTopCard(category: String, value: Int): Stack[Card] = {
-    
+    var returnStack = Stack[Card]()
+    if(category.toLowerCase() == "s") {
+      for(i <- 0 to 6) {
+        if(i == value) {
+          returnStack = uncoveredStacks(i)
+        }
+        else {
+          returnStack = Stack[Card]()
+        }
+      }
+    }
+    else if (category.toLowerCase == "a") {
+      for(i <- 0 to 3) {
+        if(i == value) {
+          returnStack = aceStacks(i)
+        }
+        else {
+          returnStack = Stack[Card]()
+        }
+      }
+    }
+    else {
+      returnStack = Stack[Card]()
+    }
+    returnStack
+  }
+
+  def moveCard(currentCardIndex: Int) = {
+
   }
 
 
@@ -743,32 +802,44 @@ object main {
       val lineSubstring = line.split(" ")
       val cardToMove = lineSubstring(1)
       var cardToMoveSuit = ""
-      var cardToMoveValue = ""
+      var cardToMoveValue = -1
       val stackToMoveTo = lineSubstring(3)
       var stackToMoveToRow = ""
-      var stackToMoveToColumn = ""
-      //Add check for making sure this is a valid card
-      //split into 2 parts, check length of string to determine if it is a 10
+      var stackToMoveToColumn = -1
+      var validCommand = false
 
-      //TODO: Write function to convert A, K, Q, J, to value
-      if(cardToMove.size == 3 && validateCard((cardToMove(0)+cardToMove(1)), cardToMove(2).toString)) {
-        cardToMoveValue = cardToMove(0) + cardToMove(1).toString
-        cardToMoveSuit = cardToMove(2).toString
-        println("Card Value: " + cardToMoveValue)
-        println("Card Suit: " + cardToMoveSuit)
+      if(cardToMove.size == 3 
+        && (validateCard((convertValueFromCard(cardToMove(0).toString)+ convertValueFromCard(cardToMove(1).toString)), cardToMove(2).toString))
+        && (validateStack(stackToMoveTo(0).toString, convertValueFromCard(stackToMoveTo(1).toString)))) 
+        {
+          cardToMoveValue = convertValueFromCard(cardToMove(0).toString) + convertValueFromCard(cardToMove(1).toString)
+          cardToMoveSuit = cardToMove(2).toString
+          stackToMoveToRow = stackToMoveTo(0).toString
+          stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
+          validCommand = true
+          println("Card Value: " + cardToMoveValue)
+          println("Card Suit: " + cardToMoveSuit)
+          println("first")
+        }
+      else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString)) 
+        && (validateStack(stackToMoveTo(0).toString, convertValueFromCard(stackToMoveTo(1).toString)))) 
+        {
+          cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
+          cardToMoveSuit = cardToMove(1).toString
+          stackToMoveToRow = stackToMoveTo(0).toString
+          stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
+          validCommand = true
+          println("Card Value: " + cardToMoveValue)
+          println("Card Suit: " + cardToMoveSuit)
+          println("second")
+        }
+      if (validCommand) {
+        //check if card is actually in play
+      val isCardInPlay = findCard(convertValueFromCard(cardToMoveValue.toString), cardToMoveSuit)
+      println("card in play: " + isCardInPlay._1 + " loc: " + isCardInPlay._2)
       }
-      else {
-        if (validateCard(cardToMove(0), cardToMove(1).toString))
-        cardToMoveValue = cardToMove(0).toString
-        cardToMoveSuit = cardToMove(1).toString
-        println("Card Value: " + cardToMoveValue)
-        println("Card Suit: " + cardToMoveSuit)
-      }
-      stackToMoveToRow = stackToMoveTo(0).toString
-      stackToMoveToColumn = stackToMoveTo(1).toString
 
       //Add check for making sure this is a valid card
-
     }
     else {
       println("That is an invalid command. Type \"help\" for a list and description of valid commands")
