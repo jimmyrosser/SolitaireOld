@@ -1033,7 +1033,7 @@ object main {
           updateGame()
         }
         else {
-          println("That card or pile is not available")
+          println("That card is not available")
         }
         //println("card in play: " + isCardInPlay._1 + " loc: " + isCardInPlay._2)
       }
