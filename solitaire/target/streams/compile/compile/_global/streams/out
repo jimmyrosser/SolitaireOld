@@ -1,7 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m[31m-- [E007] Type Mismatch Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:684:63 [0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m684 |[0m    [33mvar[0m [36mallStacksAndDrawStack[0m:[35mList[Stack[Card]][0m = allStacks ++ drawStack[0m
-[0m[[0m[31merror[0m] [0m[0m    |                                                               [31m^^^^^^^^^[0m[0m
-[0m[[0m[31merror[0m] [0m[0m    |     Found:    [1m[31m([0m[1m[31mmain[0m[1m[31m.[0m[1m[31mdrawStack[0m[1m[31m [0m[1m[31m:[0m[1m[31m [0m[1m[31mscala[0m[1m[31m.[0mcollection.mutable.Stack[Card][1m[31m)[0m[0m
-[0m[[0m[31merror[0m] [0m[0m    |     Required: [1m[32mIterableOnce[0m[1m[32m[[0mcollection.mutable.Stack[Card][1m[32m][0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m-- [E007] Type Mismatch Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:913:46 [0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m913 |[0m        && (validateCard(convertValueFromCard(cardToMove([31m0[0m).toString + cardToMove([31m1[0m).toString, cardToMove([31m2[0m).toString)))[0m
+[0m[[0m[31merror[0m] [0m[0m    |                                              [31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m    |                                            Found:    [1m[31m([0m[1m[31mString[0m[1m[31m,[0m[1m[31m [0mString[1m[31m)[0m[0m
+[0m[[0m[31merror[0m] [0m[0m    |                                            Required: String[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
