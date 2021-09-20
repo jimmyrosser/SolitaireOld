@@ -238,16 +238,16 @@ object main {
   */
   def convertSuitForCard(suit: String): String = {
     if(suit.toLowerCase == "s") {
-      "spades"
+      "Spades"
     }
     else if(suit.toLowerCase == "h") {
-      "hearts"
+      "Hearts"
     }
     else if(suit.toLowerCase == "d") {
-      "diamonds"
+      "Diamonds"
     }
     else if(suit.toLowerCase == "c") {
-      "clubs"
+      "Clubs"
     }
     else {
       "ERROR"
@@ -866,6 +866,47 @@ object main {
   }
 
   /*
+  ////////////////////////////////////////////////////
+  -------------------- CHECK MOVE --------------------
+  ////////////////////////////////////////////////////
+
+  This function checks if 2 cards can be placed together based on their value, suit, and location
+
+  */
+  def checkMove(card1: Card, card2: Card, location: String): Boolean = {
+    if(location.toLowerCase == "s") {
+      if(card1.value == card2.value + 1) {
+        if((card1.suit == Hearts || card1.suit == Diamonds) && (card2.suit == Spades || card2.suit == Clubs)) {
+          true
+        }
+        else {
+          false
+        }
+      }
+      else {
+        false
+      }
+    }
+    else if (location.toLowerCase == "a") {
+      if(card2.value == card1.value + 1) {
+        if(card1.suit == card2.suit) {
+          true
+        }
+        else {
+          false
+        }
+      }
+      else {
+        false
+      }
+    }
+    else {
+      println("ERROR IN CHECKMOVE")
+      false
+    }
+  }
+
+  /*
   ///////////////////////////////////////////////////
   -------------------- MOVE CARD --------------------
   ///////////////////////////////////////////////////
@@ -873,7 +914,8 @@ object main {
   This function moves a card from its current position to a new stack
 
   */
-  def moveCard(currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
+  def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
+    checkMove(Card(cardToMove.value, cardToMove.suit), Card())
     var card: Card = null
     //Pop current card of of the correct stack
     if(currentCardIndex == 0) {
@@ -1025,11 +1067,12 @@ object main {
           validCommand = true
         }
       if (validCommand) {
+        //checkMove(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), Card())
         //check if card is actually in play
         val isCardInPlay = findCard(cardToMoveValue, cardToMoveSuit)
         val currentLoc = isCardInPlay._2
         if(isCardInPlay._1) {
-          moveCard(currentLoc, stackToMoveToRow, stackToMoveToColumn)
+          moveCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentLoc, stackToMoveToRow, stackToMoveToColumn)
           updateGame()
         }
         else {
@@ -1045,4 +1088,13 @@ object main {
       println("That is an invalid command. Type \"help\" for a list and description of valid commands")
     }
   }
+
+  //TODO: Write function that consistantly checks if an empty uncovered stack has cards corresponding in the covered stack.
+    //If it does, pop from covered and push to covered
+    //If it does not, push blank card to uncovered
+
+  //TODO: Write function that checks if a card placement is a logically valid move with suit and value comparisons
+    //Check to make sure only ace cards can be placed into the ace piles if they are empty
+    //Ace piles MUST be same suit and count up, Solitaire piles must be alternating suits and count down
+    //Only kings can be placed in blank solitaire slots
 }
