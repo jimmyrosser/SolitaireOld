@@ -57,22 +57,7 @@ object main {
   def main(args: Array[String]): Unit = {
     dealGame()
     updateGame()
-    //println(convertCardPileToASCII(deckStack))
     playGame()
-    /*val cardPileTuple = convertCardPileToASCII(deckStack)
-    val cardStack = cardPileTuple._1
-    val numCards = cardPileTuple._2
-    var index = 0
-    println("SIZE: " + cardStack.size)
-    for(c <- cardStack) {
-      if(index > numCards && index < numCards*2+1) {
-        println(c)
-        index += 1
-      }
-      else {
-        index += 1
-      }
-    }*/
   }
 
   /*
@@ -193,7 +178,6 @@ object main {
 
   */
   def convertValueFromCard(value: String): Int = {
-    println("CFFC value: " + value)
     if(value.toLowerCase == "a") {
       1
     }
@@ -234,7 +218,6 @@ object main {
       12
     }
     else if (value.toLowerCase == "k") {
-      println("inside king if part")
       13
     }
     else {
@@ -469,30 +452,32 @@ object main {
     }
   }
 
+  /*
+  ////////////////////////////////////////////////////////////////////
+  -------------------- CONVERT CARD PILE TO ASCII --------------------
+  ////////////////////////////////////////////////////////////////////
+
+  This function converts a whole stack of cards into a single card to be printed,
+  allowing the player to see all cards, even cards on top of other cards 
+  */
   def convertCardPileToASCII(cardStack: Stack[Card]): String = {
-    /*
-    var aceCardList = List[List[String]]()
-    aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
-    */
+    //reverse the card stack to print cards in correct orders
     val reversedCardStack = cardStack.reverse
+    //convert all cards in stack to printable versions
     var cardList = List[List[String]]()
     for(card <- reversedCardStack) {
       cardList = cardList :+ convertCardToASCII(card).split(",").toList
     }
-    //println("CARDLIST LENGTH: " + cardList.length)
-
-    //maybe necessary, maybe not
+    //reformat that list so they print horizontally
     var reformattedCardList = List[String]()
     reformattedCardList = reformatCardList(cardList)
-
+    //set top of card which will never change
     var cardToPrint = "_____________" + ","
-
+    //loop through all the lines of the cards and only select the ones that have the name of the card
     var index = 0
     var cardLengthIndex = 0
     for(c <- reformattedCardList) {
-      //println("CARD LIST SIZE: " + cardList.length)
       if(index > cardList.size && index < cardList.size*2+1 && cardLengthIndex < 14) {
-        //println(c)
         cardToPrint = cardToPrint + (c.trim + ",")
         cardLengthIndex += 1
         index += 1
@@ -501,18 +486,29 @@ object main {
         index += 1
       }
     }
+    //add blank spots for all other spaces not taken up by stacked cards
     while(cardLengthIndex < 13) {
       cardToPrint = cardToPrint + "|           |" + ","
       cardLengthIndex += 1
     }
+    //add bottom line
     cardToPrint = cardToPrint + ("-------------" + ",")
+    //return
     cardToPrint
     
   }
 
+  /*
+  ////////////////////////////////////////////////////////////////////
+  -------------------- PRINT SINGLE CARD OR STACK --------------------
+  ////////////////////////////////////////////////////////////////////
+
+  This function takes a stack of cards and deturmines if the top card should be printed, 
+  or if the whole stack should be printed
+  
+  */
   def printSingleCardOrStack(stack: Stack[Card]): String = {
     if(stack.length > 1) {
-      //println("card pile if")
       convertCardPileToASCII(stack)
     }
     else if(stack.length == 1) {
@@ -549,6 +545,7 @@ object main {
   def reformatCardList(cards: List[List[String]]):List[String] = {
     var returnLine = List[String]()
     var rowCounter = 0
+    //only make rows that are less than cardHeight + 1
     while(rowCounter < 15) {
       cards.foreach(card => returnLine = returnLine :+ (card(rowCounter) + "    "))
       returnLine = returnLine :+ "\n"
@@ -644,49 +641,42 @@ object main {
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack1).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack1.top).split(",").toList
     }
     if(uncoveredStack2.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack2).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack2.top).split(",").toList
     }
     if(uncoveredStack3.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack3.top).split(",").toList
     }
     if(uncoveredStack4.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack4.top).split(",").toList
     }
     if(uncoveredStack5.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack5.top).split(",").toList
     }
     if(uncoveredStack6.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack6.top).split(",").toList
     }
     if(uncoveredStack7.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
-      //cardList = cardList :+ convertCardToASCII(uncoveredStack7.top).split(",").toList
     }
     //Call reformatCardList to arrange the cards horizontally
     var cards = reformatCardList(cardList)
@@ -695,13 +685,13 @@ object main {
       print(i)
     }
 
-
     //Makes space between the main section and the draw section
     println()
     println()
     println()
 
-    //Makes a list of the discard deck and draw deck below the main section of the game with blank cards for spacing. Adds the top card to the list and adds an empty card if there are no cards in the stack
+    //Makes a list of the discard deck and draw deck below the main section of the game with blank cards for spacing. 
+    //Adds the top card to the list and adds an empty card if there are no cards in the stack
     var drawCardsList = List[List[String]]()
     drawCardsList = 
       drawCardsList :+ printBlankCard().split(",").toList 
@@ -731,7 +721,6 @@ object main {
 
   */
   def dealGame() = {
-      println("adding cards to stacks")
       //add 1 card to first uncovered stack, add 6 cards to next 6 coverd stacks
       uncoveredStack1.push(deckStack.pop())
       for(i <- 0 to 5) {
@@ -820,7 +809,7 @@ object main {
     else if(flipInput != "1") {
       println("Error with flip count handling")
     }
-    println("Flip Count: " + cardsToFlip)
+    println("Flip " + cardsToFlip + " card at a time")
     //handle input during game
     while(running) {
       var input = readLine()
@@ -838,7 +827,8 @@ object main {
   -------------------- UPDATE GAME --------------------
   /////////////////////////////////////////////////////
 
-  This function updates the game by rebuilding the stacks and reprinting the board
+  This function updates the game by updating the stacks, 
+  rebuilding the lists of stacks, and reprinting the board
 
   */
   def updateGame(): Unit = {
@@ -847,6 +837,16 @@ object main {
     printGame()
   }
 
+  /*
+  ///////////////////////////////////////////////////////////////
+  -------------------- FIX STACKS AFTER MOVE --------------------
+  ///////////////////////////////////////////////////////////////
+
+  This function checks if a stack is empty and pushes a blank card if it is to prevent errors,
+  it also checks if there are covered cards that need to be flipped; 
+  if there are, they get popped and pushed to the uncovered stack
+
+  */
   def fixStacksAfterMove() = {
     var card: Card = null
     if(uncoveredStack1.isEmpty) {
@@ -921,11 +921,11 @@ object main {
   ///////////////////////////////////////////////////
 
   This function locates a card usning its value and suit and returns 
-  a boolean, int tuple of if the card was found, and what stack it is 
+  a (boolean, int) tuple of if the card was found, and what stack it is 
   located in in allStacksAndDiscardStack
 
   */
-  def findCard(value: Int, suit: String): (Boolean, Int) = {
+  def findCardOnTop(value: Int, suit: String): (Boolean, Int) = {
     //instantiate variables for counting and returning
     var foundAndNum = (false, -1)
     var counter = 0
@@ -950,6 +950,50 @@ object main {
     }
     //return tuple
     foundAndNum
+  }
+
+  def findCardInUncovered(value: Int, suit: String): (Boolean, Int) = {
+    //instantiate variables for counting and returning
+    var foundAndNum = (false, -1)
+    var counter = 0
+    //go through all 13 stacks
+    while(counter < 12) {
+      if(!uncoveredStacks(counter).isEmpty) {
+        //set current top card
+        val current = uncoveredStacks(counter).top
+        //if the card matches the values apssed in, set tuple to reflect that and kills the loop
+        if(current.value == value && current.suit == convertSuitForCard(suit)) {
+          foundAndNum = (true, counter)
+          counter = 12
+        }
+        //Go to next stack
+        else {
+          counter += 1
+        }
+      }
+      else {
+        counter += 1
+      }
+    }
+    //return tuple
+    foundAndNum
+  }
+  
+  def findCardAndGetStackInUncovered(card: Card): Stack[Card] = {
+    var tmpStack = Stack[Card]()
+    for(stack <- uncoveredStacks) {
+      if(stack.contains(card)) {
+        var tmpCard = stack.pop
+        tmpStack.push(tmpCard)
+        if (tmpStack.top == card) {
+          return(tmpStack)
+        }
+      }
+      else {
+        tmpStack
+      }
+    }
+    tmpStack
   }
 
   /*
@@ -1038,44 +1082,67 @@ object main {
     if(location.toLowerCase == "s") {
       if(card2.value == card1.value + 1) {
         if((card1.suit == Suit.Hearts || card1.suit == Suit.Diamonds) && (card2.suit == Suit.Spades || card2.suit == Suit.Clubs)) {
+          println("CHECKMOVE TRUE 1")
           true
         }
         else if((card1.suit == Suit.Spades || card1.suit == Suit.Clubs) && (card2.suit == Suit.Hearts || card2.suit == Suit.Diamonds)) {
+          println("CHECKMOVE TRUE 2")
           true
         }
         else {
+          println("CHECKMOVE FALSE 1")
           false
         }
       }
       else if(card2.suit == Suit.None) {
+          println("CHECKMOVE TRUE 3")
           true
         }
       else {
+        println("CHECKMOVE FALSE 2")
         false
       }
     }
     else if (location.toLowerCase == "a") {
       if(card1.value == card2.value + 1) {
         if(card1.suit == card2.suit) {
+          println("CHECKMOVE TRUE 4")
           true
         }
         else {
+          println("CHECKMOVE FALSE 3")
           false
         }
       }
       else if(card2.suit == Suit.None) {
+        println("CHECKMOVE TRUE 5")
         true
       }
       else {
+        println(card2.suit)
+        println("Ace 1: " + ace1Stack.top.value + " " + ace1Stack.top.suit)
+        println("Ace 2: " + ace2Stack.top.value + " " + ace2Stack.top.suit)
+        println("Ace 3: " + ace3Stack.top.value + " " + ace3Stack.top.suit)
+        println("Ace 4: " + ace4Stack.top.value + " " + ace4Stack.top.suit)
+        println("CHECKMOVE FALSE 4")
         false
       }
     }
     else {
       println("ERROR IN CHECKMOVE")
+      println("CHECKMOVE FALSE 5")
       false
     }
   }
 
+  /*
+  ///////////////////////////////////////////////////////////
+  -------------------- POP CORRECT STACK --------------------
+  ///////////////////////////////////////////////////////////
+
+  This function pops the correct stack based off a given index and returns that card
+
+  */
   def popCorrectStack(currentCardIndex: Int): Card = {
     var card: Card = null
     if(currentCardIndex == 0) {
@@ -1129,170 +1196,47 @@ object main {
 
   */
   def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
-    //checkMove(Card(cardToMove.value, cardToMove.suit), Card())
     var card: Card = null
     //Push current card onto correct new stack (solitaire row)
     if (newLocRow.toLowerCase == "s") {
-      //val targetStack = uncoveredStacks(newLocCol-1)
-      if(newLocCol == 1) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack1.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack1.push(card)
+      val targetStack = uncoveredStacks(newLocCol-1)
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s"))
+          if(currentCardIndex != -1) {
+            card = popCorrectStack(currentCardIndex)
+          }
+          else {
+            card = cardToMove
+          }
+          targetStack.push(card)
         }
         else {
           println("Invalid move, please try again: moveCard push new card")
         }
-      }
-      else if(newLocCol == 2) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack2.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack2.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack2.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 3) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack3.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack3.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack3.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 4) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack4.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack4.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack4.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 5) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack5.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack5.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack5.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 6) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack6.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack6.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack6.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 7) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + uncoveredStack7.top)
-        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack7.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
-          card = popCorrectStack(currentCardIndex)
-          uncoveredStack7.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
     }
-    //Push current card onto correct new stack (ace row)
     else if (newLocRow.toLowerCase == "a") {
-      if(newLocCol == 1) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + ace1Stack.top.value + " " + ace1Stack.top.suit)
-        println("First ace")
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace1Stack.top, "a")) {
-          card = popCorrectStack(currentCardIndex)
-          ace1Stack.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
+      val targetStack = aceStacks(newLocCol-1)
+      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "a")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s"))
+          if(currentCardIndex != -1) {
+            card = popCorrectStack(currentCardIndex)
+          }
+          else {
+            card = cardToMove
+          }
+          targetStack.push(card)
       }
-      else if(newLocCol == 2) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + ace2Stack.top.value + " " + ace2Stack.top.suit)
-        println("Second ace")
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace2Stack.top, "a")) {
-          card = popCorrectStack(currentCardIndex)
-          ace2Stack.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
+      else {
+        println("Invalid move, please try again: moveCard push new card")
       }
-      else if(newLocCol == 3) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + ace3Stack.top.value + " " + ace3Stack.top.suit)
-        println("Third ace")
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace3Stack.top, "a")) {
-          card = popCorrectStack(currentCardIndex)
-          ace3Stack.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-      else if(newLocCol == 4) {
-        println("MoveCard cardToMoveValue: " + cardToMove.value)
-        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
-        println("stacktoMoveToTopCard: " + ace4Stack.top.value + " " + ace4Stack.top.suit)
-        println("Fourth ace")
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace4Stack.top, "a")) {
-          card = popCorrectStack(currentCardIndex)
-          ace4Stack.push(card)
-        }
-        else {
-          println("Invalid move, please try again: moveCard push new card")
-        }
-      }
-    }
-    else {
-      println("Invalid move, please try again: incorrect locRow")
     }
   }
 
+  def moveCardStack(cardsToMove: Stack[Card], locRow: String, locCol: Int) = {
+    for(card <- cardsToMove) {
+      moveCard(cardsToMove.pop, -1, locRow, locCol)
+    }
+  }
 
   //Commands
   /*
@@ -1341,6 +1285,7 @@ object main {
       var stackToMoveToColumn = -1
       var validCommand = false
 
+      //If the card is a 10
       if(cardToMove.size == 3 
         && (validateCard(convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString), cardToMove(2).toString))
         && (validateStack(stackToMoveTo(0).toString, convertValueFromCard(stackToMoveTo(1).toString))))
@@ -1352,6 +1297,7 @@ object main {
           validCommand = true
           println("first")
         }
+      //If the card is anything except a 10  
       else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString)) 
         && (validateStack(stackToMoveTo(0).toString, convertValueFromCard(stackToMoveTo(1).toString)))) 
         {
@@ -1362,9 +1308,8 @@ object main {
           validCommand = true
         }
       if (validCommand) {
-        //checkMove(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), Card())
         //check if card is actually in play
-        val isCardInPlay = findCard(cardToMoveValue, cardToMoveSuit)
+        val isCardInPlay = findCardOnTop(cardToMoveValue, cardToMoveSuit)
         val currentLoc = isCardInPlay._2
         if(isCardInPlay._1) {
           moveCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentLoc, stackToMoveToRow, stackToMoveToColumn)
@@ -1373,7 +1318,6 @@ object main {
         else {
           println("That card is not available")
         }
-        //println("card in play: " + isCardInPlay._1 + " loc: " + isCardInPlay._2)
       }
 
       //Add check for making sure this is a valid card
@@ -1383,13 +1327,11 @@ object main {
       println("That is an invalid command. Type \"help\" for a list and description of valid commands")
     }
   }
-
-  //TODO: Write function that consistantly checks if an empty uncovered stack has cards corresponding in the covered stack.
-    //If it does, pop from covered and push to covered
-    //If it does not, push blank card to uncovered
-
-  //TODO: Write function that checks if a card placement is a logically valid move with suit and value comparisons
-    //Check to make sure only ace cards can be placed into the ace piles if they are empty
-    //Ace piles MUST be same suit and count up, Solitaire piles must be alternating suits and count down
-    //Only kings can be placed in blank solitaire slots
 }
+
+//TODO: Check if card being moved is king, if it is, check to make sure the stack its being moved to is empty
+//If it is not, check if it is a blank card
+//If it is, pop it and push the king
+//If it is not a blank card, throw an error
+
+//TODO: Implement moving stacks of cards and partial stacks of cards
