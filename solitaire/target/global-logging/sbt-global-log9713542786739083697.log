@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(0ccb92c0-4850-45ed-8937-a6d7cdf8449e), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@5737d116, check cycles: false, forcegc: true[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 9 s, completed Sep 20, 2021, 8:05:22 PM[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

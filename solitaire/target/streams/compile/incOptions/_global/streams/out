@@ -1,25 +1,2 @@
-[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/target/scala-3.0.2/classes.bak[0m
-[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
-[0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Card.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Suit.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Color$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	main$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Deck$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Suit$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	main.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Color.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	GameState.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Deck.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Card.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Suit.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Color$.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	main$.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Deck$.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Suit$.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	main.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Color.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	GameState.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Deck.tasty[0m
-[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/target/scala-3.0.2/classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes.bak[0m

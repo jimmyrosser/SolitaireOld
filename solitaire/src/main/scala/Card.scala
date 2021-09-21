@@ -1,4 +1,4 @@
-class Card(providedSuit: Suit.Value, providedValue: Int) {
+class Card(providedValue: Int, providedSuit: Suit.Value) {
     val value = providedValue
     val suit = providedSuit
     val color = setColor

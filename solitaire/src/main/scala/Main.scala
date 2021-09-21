@@ -56,7 +56,7 @@ object main {
   */
   def main(args: Array[String]): Unit = {
     dealGame()
-    printGame()
+    updateGame()
     playGame()
   }
 
@@ -236,21 +236,21 @@ object main {
   converts in to the corresponding full suit name (spades, hearts, diamonds, or clubs)
   
   */
-  def convertSuitForCard(suit: String): String = {
+  def convertSuitForCard(suit: String): Suit.Value = {
     if(suit.toLowerCase == "s") {
-      "Spades"
+      Suit.Spades
     }
     else if(suit.toLowerCase == "h") {
-      "Hearts"
+      Suit.Hearts
     }
     else if(suit.toLowerCase == "d") {
-      "Diamonds"
+      Suit.Diamonds
     }
     else if(suit.toLowerCase == "c") {
-      "Clubs"
+      Suit.Clubs
     }
     else {
-      "ERROR"
+      Suit.None
     }
   }
 
@@ -415,9 +415,29 @@ object main {
           return("ERROR IN convertCardtoASCII CLUBS ELSE")
       }
     }
+    else if(suit == Suit.None) {
+      return(
+          "_____________" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "|           |" + "," + 
+          "-------------")
+    }
     else {
       return("ERROR IN convertCardtoASCII LAST ELSE")
     }
+  }
+
+  def convertCardPileToASCII(cardStack: Stack[Card]) = {
+    //convert every card
   }
 
   /*
@@ -516,7 +536,7 @@ object main {
 
     //Makes a list of the ace card spots above the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var aceCardList = List[List[String]]()
-    if(ace1Stack.isEmpty) {
+    /*if(ace1Stack.isEmpty) {
       aceCardList = aceCardList :+ printEmptyCard().split(",").toList
     }
     else {
@@ -539,7 +559,11 @@ object main {
     }
     else {
       aceCardList = aceCardList :+ convertCardToASCII(ace4Stack.top).split(",").toList
-    }
+    }*/
+    aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
+    aceCardList = aceCardList :+ convertCardToASCII(ace2Stack.top).split(",").toList
+    aceCardList = aceCardList :+ convertCardToASCII(ace3Stack.top).split(",").toList
+    aceCardList = aceCardList :+ convertCardToASCII(ace4Stack.top).split(",").toList
     //Call reformatCardList to arrange the cards horizontally
     var aceCards = reformatCardList(aceCardList)
     //Print the cards
@@ -750,8 +774,77 @@ object main {
 
   */
   def updateGame(): Unit = {
+    fixStacksAfterMove()
     rebuildStacks()
     printGame()
+  }
+
+  def fixStacksAfterMove() = {
+    var card: Card = null
+    if(uncoveredStack1.isEmpty) {
+      uncoveredStack1.push(Card(-1, Suit.None))
+    }
+
+    if(uncoveredStack2.isEmpty && coveredStack2.isEmpty) {
+      uncoveredStack2.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack2.isEmpty && !(coveredStack2.isEmpty)) {
+      card = coveredStack2.pop()
+      uncoveredStack2.push(card)
+    }
+
+    if(uncoveredStack3.isEmpty && coveredStack3.isEmpty) {
+      uncoveredStack3.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack3.isEmpty && !(coveredStack3.isEmpty)) {
+      card = coveredStack3.pop()
+      uncoveredStack3.push(card)
+    }
+
+    if(uncoveredStack4.isEmpty && coveredStack4.isEmpty) {
+      uncoveredStack4.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack4.isEmpty && !(coveredStack4.isEmpty)) {
+      card = coveredStack4.pop()
+      uncoveredStack4.push(card)
+    }
+
+    if(uncoveredStack5.isEmpty && coveredStack5.isEmpty) {
+      uncoveredStack5.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack5.isEmpty && !(coveredStack5.isEmpty)) {
+      card = coveredStack5.pop()
+      uncoveredStack5.push(card)
+    }
+
+    if(uncoveredStack6.isEmpty && coveredStack6.isEmpty) {
+      uncoveredStack6.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack6.isEmpty && !(coveredStack6.isEmpty)) {
+      card = coveredStack6.pop()
+      uncoveredStack6.push(card)
+    }
+
+    if(uncoveredStack7.isEmpty && coveredStack7.isEmpty) {
+      uncoveredStack7.push(Card(-1, Suit.None))
+    }
+    else if(uncoveredStack7.isEmpty && !(coveredStack7.isEmpty)) {
+      card = coveredStack7.pop()
+      uncoveredStack7.push(card)
+    }
+
+    if(ace1Stack.isEmpty) {
+      ace1Stack.push(Card(-1, Suit.None))
+    }
+    if(ace2Stack.isEmpty) {
+      ace2Stack.push(Card(-1, Suit.None))
+    }
+    if(ace3Stack.isEmpty) {
+      ace3Stack.push(Card(-1, Suit.None))
+    }
+    if(ace4Stack.isEmpty) {
+      ace4Stack.push(Card(-1, Suit.None))
+    }
   }
 
   /*
@@ -774,7 +867,7 @@ object main {
         //set current top card
         val current = allStacksAndDiscardStack(counter).top
         //if the card matches the values apssed in, set tuple to reflect that and kills the loop
-        if(current.value == value && current.suit.toString.toLowerCase == convertSuitForCard(suit)) {
+        if(current.value == value && current.suit == convertSuitForCard(suit)) {
           foundAndNum = (true, counter)
           counter = 12
         }
@@ -875,26 +968,35 @@ object main {
   */
   def checkMove(card1: Card, card2: Card, location: String): Boolean = {
     if(location.toLowerCase == "s") {
-      if(card1.value == card2.value + 1) {
-        if((card1.suit == Hearts || card1.suit == Diamonds) && (card2.suit == Spades || card2.suit == Clubs)) {
+      if(card2.value == card1.value + 1) {
+        if((card1.suit == Suit.Hearts || card1.suit == Suit.Diamonds) && (card2.suit == Suit.Spades || card2.suit == Suit.Clubs)) {
+          true
+        }
+        else if((card1.suit == Suit.Spades || card1.suit == Suit.Clubs) && (card2.suit == Suit.Hearts || card2.suit == Suit.Diamonds)) {
           true
         }
         else {
           false
         }
       }
+      else if(card2.suit == Suit.None) {
+          true
+        }
       else {
         false
       }
     }
     else if (location.toLowerCase == "a") {
-      if(card2.value == card1.value + 1) {
+      if(card1.value == card2.value + 1) {
         if(card1.suit == card2.suit) {
           true
         }
         else {
           false
         }
+      }
+      else if(card2.suit == Suit.None) {
+        true
       }
       else {
         false
@@ -906,18 +1008,8 @@ object main {
     }
   }
 
-  /*
-  ///////////////////////////////////////////////////
-  -------------------- MOVE CARD --------------------
-  ///////////////////////////////////////////////////
-
-  This function moves a card from its current position to a new stack
-
-  */
-  def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
-    checkMove(Card(cardToMove.value, cardToMove.suit), Card())
+  def popCorrectStack(currentCardIndex: Int): Card = {
     var card: Card = null
-    //Pop current card of of the correct stack
     if(currentCardIndex == 0) {
       card = uncoveredStack1.pop
     }
@@ -955,50 +1047,180 @@ object main {
       card = discardStack.pop
     }
     else {
-      println("ERROR IN MOVECARD LAST ELSE")
+      println("ERROR IN POPCORRECTSTACK LAST ELSE")
     }
+    card
+  }
 
+  /*
+  ///////////////////////////////////////////////////
+  -------------------- MOVE CARD --------------------
+  ///////////////////////////////////////////////////
+
+  This function moves a card from its current position to a new stack
+
+  */
+  def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
+    //checkMove(Card(cardToMove.value, cardToMove.suit), Card())
+    var card: Card = null
     //Push current card onto correct new stack (solitaire row)
     if (newLocRow.toLowerCase == "s") {
       if(newLocCol == 1) {
-        uncoveredStack1.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack1.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack1.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 2) {
-        uncoveredStack2.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack2.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack2.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack2.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 3) {
-        uncoveredStack3.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack3.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack3.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack3.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 4) {
-        uncoveredStack4.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack4.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack4.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack4.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 5) {
-        uncoveredStack5.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack5.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack5.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack5.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 6) {
-        uncoveredStack6.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack6.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack6.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack6.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 7) {
-        uncoveredStack7.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + uncoveredStack7.top)
+        println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack7.top, "s")) {
+          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), uncoveredStack1.top, "s"))
+          card = popCorrectStack(currentCardIndex)
+          uncoveredStack7.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
     }
     //Push current card onto correct new stack (ace row)
     else if (newLocRow.toLowerCase == "a") {
       if(newLocCol == 1) {
-        ace1Stack.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + ace1Stack.top.value + " " + ace1Stack.top.suit)
+        println("First ace")
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace1Stack.top, "a")) {
+          card = popCorrectStack(currentCardIndex)
+          ace1Stack.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 2) {
-        ace2Stack.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + ace2Stack.top.value + " " + ace2Stack.top.suit)
+        println("Second ace")
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace2Stack.top, "a")) {
+          card = popCorrectStack(currentCardIndex)
+          ace2Stack.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 3) {
-        ace3Stack.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + ace3Stack.top.value + " " + ace3Stack.top.suit)
+        println("Third ace")
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace3Stack.top, "a")) {
+          card = popCorrectStack(currentCardIndex)
+          ace3Stack.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
       else if(newLocCol == 4) {
-        ace4Stack.push(card)
+        println("MoveCard cardToMoveValue: " + cardToMove.value)
+        println("MoveCard cardToMoveSuit: " + cardToMove.suit)
+        println("stacktoMoveToTopCard: " + ace4Stack.top.value + " " + ace4Stack.top.suit)
+        println("Fourth ace")
+        if(checkMove(Card(cardToMove.value, cardToMove.suit), ace4Stack.top, "a")) {
+          card = popCorrectStack(currentCardIndex)
+          ace4Stack.push(card)
+        }
+        else {
+          println("Invalid move, please try again: moveCard push new card")
+        }
       }
     }
     else {
-      println("Invalid move, please try again")
+      println("Invalid move, please try again: incorrect locRow")
     }
   }
 
@@ -1031,9 +1253,13 @@ object main {
     //draws a card from the deck and adds it face up to the discard pile
     else if(line.toLowerCase == "draw")
     {
+      if(drawStack.isEmpty) {
+        drawStack.pushAll(discardStack)
+        discardStack.push(drawStack.pop)
+        updateGame()
+      }
       discardStack.push(drawStack.pop())
-      rebuildStacks()
-      printGame()
+      updateGame()
     }
     //handles moving a card by calling multiple functions to convert command to usable data
     else if(line.toLowerCase().contains("move")) {
