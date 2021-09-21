@@ -57,7 +57,22 @@ object main {
   def main(args: Array[String]): Unit = {
     dealGame()
     updateGame()
+    //println(convertCardPileToASCII(deckStack))
     playGame()
+    /*val cardPileTuple = convertCardPileToASCII(deckStack)
+    val cardStack = cardPileTuple._1
+    val numCards = cardPileTuple._2
+    var index = 0
+    println("SIZE: " + cardStack.size)
+    for(c <- cardStack) {
+      if(index > numCards && index < numCards*2+1) {
+        println(c)
+        index += 1
+      }
+      else {
+        index += 1
+      }
+    }*/
   }
 
   /*
@@ -272,7 +287,8 @@ object main {
         return(
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
-        "|           |" + "," + 
+        "|           |" + "," +
+        "|           |" + "," +
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
@@ -281,6 +297,7 @@ object main {
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -289,6 +306,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
@@ -297,6 +315,7 @@ object main {
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|       " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -310,6 +329,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "     |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
@@ -318,6 +338,7 @@ object main {
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "     |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -326,6 +347,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "     |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
@@ -334,6 +356,7 @@ object main {
         "|  " + shortSuit + "     " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "     |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|       " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -347,6 +370,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
@@ -355,6 +379,7 @@ object main {
         "|        " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -363,6 +388,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
@@ -371,6 +397,7 @@ object main {
         "|        " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|       " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -384,6 +411,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
@@ -392,6 +420,7 @@ object main {
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -400,6 +429,7 @@ object main {
         "_____________" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "        |" + "," + 
@@ -408,6 +438,7 @@ object main {
         "|  " + shortSuit + "        |" + "," + 
         "|  " + shortSuit + "  " + shortSuit + "  " + shortSuit + "  |" + "," + 
         "|           |" + "," + 
+        "|           |" + "," +
         "|       " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
@@ -422,6 +453,8 @@ object main {
           "|           |" + "," + 
           "|           |" + "," + 
           "|           |" + "," + 
+          "|           |" + "," +
+          "|           |" + "," +
           "|           |" + "," + 
           "|           |" + "," + 
           "|           |" + "," + 
@@ -436,8 +469,58 @@ object main {
     }
   }
 
-  def convertCardPileToASCII(cardStack: Stack[Card]) = {
-    //convert every card
+  def convertCardPileToASCII(cardStack: Stack[Card]): String = {
+    /*
+    var aceCardList = List[List[String]]()
+    aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
+    */
+    val reversedCardStack = cardStack.reverse
+    var cardList = List[List[String]]()
+    for(card <- reversedCardStack) {
+      cardList = cardList :+ convertCardToASCII(card).split(",").toList
+    }
+    //println("CARDLIST LENGTH: " + cardList.length)
+
+    //maybe necessary, maybe not
+    var reformattedCardList = List[String]()
+    reformattedCardList = reformatCardList(cardList)
+
+    var cardToPrint = "_____________" + ","
+
+    var index = 0
+    var cardLengthIndex = 0
+    for(c <- reformattedCardList) {
+      //println("CARD LIST SIZE: " + cardList.length)
+      if(index > cardList.size && index < cardList.size*2+1 && cardLengthIndex < 14) {
+        //println(c)
+        cardToPrint = cardToPrint + (c.trim + ",")
+        cardLengthIndex += 1
+        index += 1
+      }
+      else {
+        index += 1
+      }
+    }
+    while(cardLengthIndex < 13) {
+      cardToPrint = cardToPrint + "|           |" + ","
+      cardLengthIndex += 1
+    }
+    cardToPrint = cardToPrint + ("-------------" + ",")
+    cardToPrint
+    
+  }
+
+  def printSingleCardOrStack(stack: Stack[Card]): String = {
+    if(stack.length > 1) {
+      //println("card pile if")
+      convertCardPileToASCII(stack)
+    }
+    else if(stack.length == 1) {
+      convertCardToASCII(stack.top)
+    }
+    else {
+      "ERROR IN PRINT SINGLE CARD OR STACK"
+    }
   }
 
   /*
@@ -466,7 +549,7 @@ object main {
   def reformatCardList(cards: List[List[String]]):List[String] = {
     var returnLine = List[String]()
     var rowCounter = 0
-    while(rowCounter < 13) {
+    while(rowCounter < 15) {
       cards.foreach(card => returnLine = returnLine :+ (card(rowCounter) + "    "))
       returnLine = returnLine :+ "\n"
       rowCounter += 1
@@ -488,6 +571,8 @@ object main {
     "|           |" + "," + 
     "|           |" + "," + 
     "|           |" + "," + 
+    "|           |" + "," +
+    "|           |" + "," +
     "|           |" + "," + 
     "|           |" + "," + 
     "|           |" + "," + 
@@ -513,6 +598,8 @@ object main {
     "             " + "," + 
     "             " + "," + 
     "             " + "," + 
+    "             " + "," +
+    "             " + "," +
     "             " + "," + 
     "             " + "," + 
     "             " + "," + 
@@ -536,30 +623,6 @@ object main {
 
     //Makes a list of the ace card spots above the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var aceCardList = List[List[String]]()
-    /*if(ace1Stack.isEmpty) {
-      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
-    }
-    else {
-      aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
-    }
-    if(ace2Stack.isEmpty) {
-      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
-    }
-    else {
-      aceCardList = aceCardList :+ convertCardToASCII(ace2Stack.top).split(",").toList
-    }
-    if(ace3Stack.isEmpty) {
-      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
-    }
-    else {
-      aceCardList = aceCardList :+ convertCardToASCII(ace3Stack.top).split(",").toList
-    }
-    if(ace4Stack.isEmpty) {
-      aceCardList = aceCardList :+ printEmptyCard().split(",").toList
-    }
-    else {
-      aceCardList = aceCardList :+ convertCardToASCII(ace4Stack.top).split(",").toList
-    }*/
     aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
     aceCardList = aceCardList :+ convertCardToASCII(ace2Stack.top).split(",").toList
     aceCardList = aceCardList :+ convertCardToASCII(ace3Stack.top).split(",").toList
@@ -573,8 +636,6 @@ object main {
     println()
     println()
     println()
-    println()
-    println()
 
     //Makes a list of the solitaire spots in the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var cardList = List[List[String]]()
@@ -582,43 +643,50 @@ object main {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack1.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack1).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack1.top).split(",").toList
     }
     if(uncoveredStack2.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack2.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack2).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack2.top).split(",").toList
     }
     if(uncoveredStack3.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack3.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack3.top).split(",").toList
     }
     if(uncoveredStack4.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack4.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack4.top).split(",").toList
     }
     if(uncoveredStack5.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack5.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack5.top).split(",").toList
     }
     if(uncoveredStack6.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack6.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack6.top).split(",").toList
     }
     if(uncoveredStack7.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      cardList = cardList :+ convertCardToASCII(uncoveredStack7.top).split(",").toList
+      cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
+      //cardList = cardList :+ convertCardToASCII(uncoveredStack7.top).split(",").toList
     }
     //Call reformatCardList to arrange the cards horizontally
     var cards = reformatCardList(cardList)
@@ -1065,6 +1133,7 @@ object main {
     var card: Card = null
     //Push current card onto correct new stack (solitaire row)
     if (newLocRow.toLowerCase == "s") {
+      //val targetStack = uncoveredStacks(newLocCol-1)
       if(newLocCol == 1) {
         println("MoveCard cardToMoveValue: " + cardToMove.value)
         println("MoveCard cardToMoveSuit: " + cardToMove.suit)

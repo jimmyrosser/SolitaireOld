@@ -1,9 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m[31m-- [E007] Type Mismatch Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:439:63 [0m[0m
-[0m[[0m[31merror[0m] [0m[0m[31m439 |[0m  [33mdef[0m [36mconvertCardPileToASCII[0m([36mcardStack[0m: [35mStack[Card][0m): [35mString[0m = {[0m
-[0m[[0m[31merror[0m] [0m[0m    |                                                               [31m^[0m[0m
-[0m[[0m[31merror[0m] [0m[0m    |                                                      Found:    Unit[0m
-[0m[[0m[31merror[0m] [0m[0m    |                                                      Required: String[0m
-[0m[[0m[31merror[0m] [0m[0m[31m440 |[0m    [34m//convert every card[0m
-[0m[[0m[31merror[0m] [0m[0m[31m441 |[0m[0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m-- [E052] Type Error: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:477:14 [0m[0m
+[0m[[0m[31merror[0m] [0m[0m[31m477 |[0m    cardStack = cardStack.reverse[0m
+[0m[[0m[31merror[0m] [0m[0m    |    [31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m[0m
+[0m[[0m[31merror[0m] [0m[0m    |    Reassignment to val cardStack[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
