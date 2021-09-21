@@ -801,6 +801,10 @@ object main {
     //prompt for play style
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
+    println("Commands:")
+    println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
+    println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc. \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+    println("q - quit the game")
     
     //set play style
     if(flipInput == "3") {
@@ -1266,12 +1270,16 @@ object main {
     //draws a card from the deck and adds it face up to the discard pile
     else if(line.toLowerCase == "draw")
     {
+      //check if the deck stack is empty, if so, push the discard stack to the deck stack, revcerse it, and clear the discard stack
       if(drawStack.isEmpty) {
-        drawStack.pushAll(discardStack)
-        discardStack.push(drawStack.pop)
+        drawStack.pushAll(discardStack).reverse
+        discardStack.clear()
         updateGame()
       }
-      discardStack.push(drawStack.pop())
+      //handle drawing a card and placing it face up in the discard pile
+      val drawCard = drawStack.pop()
+      discardStack.push(drawCard)
+      println("Discard Stack Length: " + discardStack.size)
       updateGame()
     }
     //handles moving a card by calling multiple functions to convert command to usable data
