@@ -39,7 +39,7 @@ object main {
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = Deck.shuffleDeck(Deck.generateDeck)
+  val deck = /*Deck.shuffleDeck*/(Deck.generateDeck)
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
@@ -823,6 +823,10 @@ object main {
         println(s"Goodbye $name!")
         running = false
       }
+      if(ace1Stack.size == 13 && ace2Stack.size == 13 && ace3Stack.size == 13 && ace4Stack.size == 13) {
+        println("Congratulations! You won Solitaire!")
+        running = false
+      }
     }
   }
 
@@ -920,9 +924,9 @@ object main {
   }
 
   /*
-  ///////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////
   -------------------- FIND CARD ON TOP --------------------
-  ///////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////
 
   This function locates a card using its value and suit and returns 
   a (boolean, int) tuple of if the card was found, and what stack it is 
@@ -1046,7 +1050,21 @@ object main {
   UNUSED
 
   */
-  def getStackFromTopCard(category: String, value: Int): Stack[Card] = {
+  def getStackFromCard(targetCard: Card): Stack[Card] = {
+    var stackToReturn = Stack[Card]()
+    for(stack <- allStacks) {
+      for(card <- stack) {
+        if(card.value == targetCard.value && card.suit == targetCard.suit) {
+          println("found stack")
+          println("Stack size: " + stack.size)
+          stackToReturn = stack
+        }
+      }
+    }
+    stackToReturn
+
+  }
+  /*def getStackFromTopCard(category: String, value: Int): Stack[Card] = {
     var returnStack = Stack[Card]()
     if(category.toLowerCase() == "s") {
       for(i <- 0 to 6) {
@@ -1072,7 +1090,7 @@ object main {
       returnStack = Stack[Card]()
     }
     returnStack
-  }
+  }*/
 
   /*
   ////////////////////////////////////////////////////
@@ -1240,31 +1258,44 @@ object main {
     }
   }
   //steps of moving
-  //check size of stack where card is
+  //check size of stack where card is (need card and stack)
   //if size > 1, moveCardStack (getting all cards below and including that card)
   //else, call regular move function
 
+  def moveMultipleCards(mainCardToMove: Card, currentStack: Stack[Card], stackToMoveTo: Stack[Card]) = {
+    if(currentStack.size > 1) {
+      val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
+      stackToMoveTo.pushAll(cardsSelected)
+    }
+    else {
+      println("ERROR IN MOVE MULTIPLE CARDS")
+    }
+  }
 
-  def checkCardStackForMultipleCards(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
-    //get index of card with index of
-    //pop items through that element
+
+  def getSubsetOfCardStack(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
     val tmpStack = Stack[Card]()
-    var card = null
-    while(currentStack.top != targetCard) {
+    var card = Card(-1, Suit.None)
+    println("top card: " + currentStack.top.value + " of " + currentStack.top.suit)
+    while(currentStack.top.value != targetCard.value && currentStack.top.suit != targetCard.suit) {
+      println("popping card")
       card = currentStack.pop()
+      println("pushing card")
       tmpStack.push(card)
     }
     card = currentStack.pop()
     tmpStack.push(card)
+    println("tmpstack:")
+    tmpStack.foreach(c => println(c.value + " " + c.suit))
     tmpStack
   }
 
-  def moveCardStack(cardsToMove: Stack[Card], locCol: Int) = {
+  /*def moveCardStack(cardsToMove: Stack[Card], locCol: Int) = {
     var tmpStack = Stack[Card]()    
     tmpstack.pushAll(cardsToMove).reverse
     val targetStack = uncoveredStacks(locCol-1)
     targetStack.pushAll(tmpStack)
-  }
+  }*/
 
   def handleKingToEmptyStack(newLocCol: Int) = {
     val targetStack = uncoveredStacks(newLocCol-1)
@@ -1331,6 +1362,48 @@ object main {
       updateGame()
     }
     //handles moving a card by calling multiple functions to convert command to usable data
+    else if (line.toLowerCase().contains("moveall")) {
+      val lineSubstring = line.split(" ")
+      val cardToMove = lineSubstring(1)
+      var cardToMoveSuit = ""
+      var cardToMoveValue = -1
+      var currentStack = Stack[Card]()
+      val stackToMoveToString = lineSubstring(3)
+      var stackToMoveToRow = ""
+      var stackToMoveToColumn = -1
+      var stackToMoveTo = Stack[Card]()
+      var validCommand = false
+
+      if(cardToMove.size == 3 && (validateCard(convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString), cardToMove(2).toString))) {
+        cardToMoveValue = convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString)
+        cardToMoveSuit = cardToMove(2).toString
+        currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
+        println("CS size: " + currentStack.size)
+        stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
+        println("STMTC: " + stackToMoveToColumn)
+        stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
+        println("STMT size: " + stackToMoveTo.size)
+        validCommand = true
+        println("multiple cards first")
+      }
+      else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString))) {
+        cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
+        cardToMoveSuit = cardToMove(1).toString
+        currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
+        println("CS size: " + currentStack.size)
+        stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
+        println("STMTC: " + stackToMoveToColumn)
+        stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
+        println("STMT size: " + stackToMoveTo.size)
+        validCommand = true
+        println("multiple cards second")
+      }
+      if (validCommand) {
+        moveMultipleCards(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentStack, stackToMoveTo)
+        updateGame()
+      }
+      updateGame()
+    }
     else if(line.toLowerCase().contains("move")) {
       val lineSubstring = line.split(" ")
       val cardToMove = lineSubstring(1)
@@ -1384,10 +1457,3 @@ object main {
     }
   }
 }
-
-//TODO: Check if card being moved is king, if it is, check to make sure the stack its being moved to is empty
-//If it is not, check if it is a blank card
-//If it is, pop it and push the king
-//If it is not a blank card, throw an error
-
-//TODO: Implement moving stacks of cards and partial stacks of cards
