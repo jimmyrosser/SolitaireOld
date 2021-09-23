@@ -921,10 +921,10 @@ object main {
 
   /*
   ///////////////////////////////////////////////////
-  -------------------- FIND CARD --------------------
+  -------------------- FIND CARD ON TOP --------------------
   ///////////////////////////////////////////////////
 
-  This function locates a card usning its value and suit and returns 
+  This function locates a card using its value and suit and returns 
   a (boolean, int) tuple of if the card was found, and what stack it is 
   located in in allStacksAndDiscardStack
 
@@ -1204,19 +1204,23 @@ object main {
     //Push current card onto correct new stack (solitaire row)
     if (newLocRow.toLowerCase == "s") {
       val targetStack = uncoveredStacks(newLocCol-1)
-        if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s"))
-          if(currentCardIndex != -1) {
-            card = popCorrectStack(currentCardIndex)
-          }
-          else {
-            card = cardToMove
-          }
-          targetStack.push(card)
+      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s")) {
+        if(cardToMove.value == 13) {
+          handleKingToEmptyStack(newLocCol)
+          card = cardToMove
+          popCorrectStack(currentCardIndex)
+        }
+        else if(currentCardIndex != -1) {
+          card = popCorrectStack(currentCardIndex)
         }
         else {
-          println("Invalid move, please try again: moveCard push new card")
+          card = cardToMove
         }
+        targetStack.push(card)
+      }
+      else {
+        println("Invalid move, please try again: moveCard push new card")
+      }
     }
     else if (newLocRow.toLowerCase == "a") {
       val targetStack = aceStacks(newLocCol-1)
@@ -1235,10 +1239,54 @@ object main {
       }
     }
   }
+  //steps of moving
+  //check size of stack where card is
+  //if size > 1, moveCardStack (getting all cards below and including that card)
+  //else, call regular move function
 
-  def moveCardStack(cardsToMove: Stack[Card], locRow: String, locCol: Int) = {
-    for(card <- cardsToMove) {
-      moveCard(cardsToMove.pop, -1, locRow, locCol)
+
+  def checkCardStackForMultipleCards(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
+    //get index of card with index of
+    //pop items through that element
+    val tmpStack = Stack[Card]()
+    var card = null
+    while(currentStack.top != targetCard) {
+      card = currentStack.pop()
+      tmpStack.push(card)
+    }
+    card = currentStack.pop()
+    tmpStack.push(card)
+    tmpStack
+  }
+
+  def moveCardStack(cardsToMove: Stack[Card], locCol: Int) = {
+    var tmpStack = Stack[Card]()    
+    tmpstack.pushAll(cardsToMove).reverse
+    val targetStack = uncoveredStacks(locCol-1)
+    targetStack.pushAll(tmpStack)
+  }
+
+  def handleKingToEmptyStack(newLocCol: Int) = {
+    val targetStack = uncoveredStacks(newLocCol-1)
+    if(targetStack.isEmpty) {
+      println("ERROR 1 IN HANDLE KING TO EMPTY STACK")
+    }
+    else if(checkIfTopIsBlank(targetStack)) {
+      targetStack.pop()
+    }
+    else {
+      println("Error 2 in handleKingToEmptyStack")
+    }
+
+  }
+
+  def checkIfTopIsBlank(stack: Stack[Card]):Boolean = {
+    if(stack.top.value == -1 && stack.top.suit == Suit.None) {
+      return true
+    }
+    else {
+      println("top card of stack is not empty")
+      false
     }
   }
 
