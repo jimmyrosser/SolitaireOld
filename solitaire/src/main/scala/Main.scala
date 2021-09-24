@@ -39,7 +39,7 @@ object main {
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = /*Deck.shuffleDeck*/(Deck.generateDeck)
+  val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
@@ -268,7 +268,7 @@ object main {
     if(suit == Suit.Hearts) {
       if(value != 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," +
         "|           |" + "," +
@@ -286,7 +286,7 @@ object main {
       }
       else if(value == 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -309,7 +309,7 @@ object main {
     else if(suit == Suit.Diamonds) {
       if(value != 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -327,7 +327,7 @@ object main {
       }
       else if(value == 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -350,7 +350,7 @@ object main {
     else if(suit == Suit.Spades) {
       if (value != 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -368,7 +368,7 @@ object main {
       }
       else if(value == 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -391,7 +391,7 @@ object main {
     else if(suit == Suit.Clubs) {
       if(value != 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "        |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -409,7 +409,7 @@ object main {
       }
       else if(value == 10) {
         return(
-        "_____________" + "," + 
+        "-------------" + "," + 
         "| " + convertValueForCard(value) + shortSuit + "       |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
@@ -431,7 +431,7 @@ object main {
     }
     else if(suit == Suit.None) {
       return(
-          "_____________" + "," + 
+          "-------------" + "," + 
           "|           |" + "," + 
           "|           |" + "," + 
           "|           |" + "," + 
@@ -564,7 +564,7 @@ object main {
 
   */
   def printEmptyCard():String = {
-    "_____________" + "," + 
+    "-------------" + "," + 
     "|           |" + "," + 
     "|           |" + "," + 
     "|           |" + "," + 
@@ -608,6 +608,37 @@ object main {
     "             "
   }
 
+  def convertStackSizeToASCII(size: Int): String = {
+    if (size == 0) {
+      "             "
+    }
+    else if(size == 1) {
+      "*            "
+    }
+    else if(size == 2) {
+      "**           "
+    }
+    else if(size == 3) {
+      "***          "
+    }
+    else if(size == 4) {
+      "****         "
+    }
+    else if(size == 5) {
+      "*****        "
+    }
+    else if(size == 6) {
+      "******       "
+    }
+    else if(size == 7) {
+      "*******      "
+    }
+    else {
+      println("ERROR IN CONVERT STACK SIZE TO ASCII")
+      "ERROR"
+    }
+  }
+
   /*
   ////////////////////////////////////////////////////
   -------------------- PRINT GAME --------------------
@@ -646,36 +677,47 @@ object main {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      println("             " + "    " + convertStackSizeToASCII(coveredStack2.size) 
+            + "    " + convertStackSizeToASCII(coveredStack3.size)
+            + "    " + convertStackSizeToASCII(coveredStack4.size)
+            + "    " + convertStackSizeToASCII(coveredStack5.size)
+            + "    " + convertStackSizeToASCII(coveredStack6.size)
+            + "    " + convertStackSizeToASCII(coveredStack7.size))
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack2).split(",").toList
     }
     if(uncoveredStack3.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack3.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
     }
     if(uncoveredStack4.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack4.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
     }
     if(uncoveredStack5.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack5.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
     }
     if(uncoveredStack6.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack6.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
     }
     if(uncoveredStack7.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
+      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack7.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
     }
     //Call reformatCardList to arrange the cards horizontally
@@ -1047,7 +1089,7 @@ object main {
   -------------------- GET STACK FROM TOP CARD --------------------
   /////////////////////////////////////////////////////////////////
 
-  UNUSED
+  This function takes a card and returns the stack that that card is in
 
   */
   def getStackFromCard(targetCard: Card): Stack[Card] = {
@@ -1276,8 +1318,10 @@ object main {
   def getSubsetOfCardStack(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
     val tmpStack = Stack[Card]()
     var card = Card(-1, Suit.None)
-    println("top card: " + currentStack.top.value + " of " + currentStack.top.suit)
-    while(currentStack.top.value != targetCard.value && currentStack.top.suit != targetCard.suit) {
+    println("target card stack size: " + currentStack.size)
+    println("top card current: " + currentStack.top.value + " of " + currentStack.top.suit)
+    println("target card: " + targetCard.value + " of " + targetCard.suit)
+    while(currentStack.top.value != targetCard.value) {
       println("popping card")
       card = currentStack.pop()
       println("pushing card")
@@ -1457,3 +1501,7 @@ object main {
     }
   }
 }
+
+//Add check for card going to empty stack (or stack with blank top card), must be a king
+//Add remove blank card when moving a stack of cards and the main card is a king
+//Add indicator for number of cards underneath stack
