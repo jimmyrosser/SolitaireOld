@@ -1573,4 +1573,4 @@ object main {
 
 //Add check for card going to empty stack (or stack with blank top card), must be a king
 //Add remove blank card when moving a stack of cards and the main card is a king
-//Add indicator for number of cards underneath stack
+//Check move when moving whole stack
