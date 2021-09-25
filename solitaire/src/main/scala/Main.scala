@@ -39,7 +39,7 @@ object main {
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
+  val deck = /*Deck.shuffleDeck*/(Deck.shuffleDeck(Deck.generateDeck))
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
@@ -452,6 +452,48 @@ object main {
     }
   }
 
+  def convertCardToASCIIWithSize(size: Int): String = {
+    if(size > 9) {
+      val stringSize = size.toString()
+        "-------------" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," +
+        //
+        "|           |" + "," +
+        "|    " + stringSize(0) + " " + stringSize(1) + "    |" + "," + 
+        "|           |" + "," + 
+        //
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "-------------"
+    }
+    else {
+        "-------------" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," +
+        //
+        "|           |" + "," +
+        "|     " + size + "     |" + "," + 
+        "|           |" + "," + 
+        //
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "|           |" + "," + 
+        "-------------"
+    }
+  }
+
   /*
   ////////////////////////////////////////////////////////////////////
   -------------------- CONVERT CARD PILE TO ASCII --------------------
@@ -472,7 +514,7 @@ object main {
     var reformattedCardList = List[String]()
     reformattedCardList = reformatCardList(cardList)
     //set top of card which will never change
-    var cardToPrint = "_____________" + ","
+    var cardToPrint = "-------------" + ","
     //loop through all the lines of the cards and only select the ones that have the name of the card
     var index = 0
     var cardLengthIndex = 0
@@ -633,8 +675,26 @@ object main {
     else if(size == 7) {
       "*******      "
     }
+    else if(size == 8) {
+      "********     "
+    }
+    else if(size == 9) {
+      "*********    "
+    }
+    else if(size == 10) {
+      "**********   "
+    }
+    else if(size == 11) {
+      "***********  "
+    }
+    else if(size == 12) {
+      "************ "
+    }
+    else if(size == 13) {
+      "*************"
+    }
     else {
-      println("ERROR IN CONVERT STACK SIZE TO ASCII")
+      //println("ERROR IN CONVERT STACK SIZE TO ASCII")
       "ERROR"
     }
   }
@@ -747,10 +807,14 @@ object main {
     else {
       drawCardsList = drawCardsList :+ convertCardToASCII(discardStack.top).split(",").toList
     }
-    drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
+    drawCardsList = drawCardsList :+ convertCardToASCIIWithSize(drawStack.size).split(",").toList
     //call reformatCardList to arrange the cards horizontally
     var drawCards = reformatCardList(drawCardsList)
     //Print the cards
+    if(deckStack.size < 14) {
+      print("                                                                                                      ")
+      println(convertStackSizeToASCII(deckStack.size))
+    }
     printCard(drawCards)
   }
 
@@ -844,9 +908,10 @@ object main {
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
     println("Commands:")
-    println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
-    println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc. \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
-    println("q - quit the game")
+      println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
+      println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+      println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
+      println("q - quit the game")
     
     //set play style
     if(flipInput == "3") {
@@ -865,7 +930,7 @@ object main {
         println(s"Goodbye $name!")
         running = false
       }
-      if(ace1Stack.size == 13 && ace2Stack.size == 13 && ace3Stack.size == 13 && ace4Stack.size == 13) {
+      if(ace1Stack.size == 14 && ace2Stack.size == 14 && ace3Stack.size == 14 && ace4Stack.size == 14) {
         println("Congratulations! You won Solitaire!")
         running = false
       }
@@ -1387,7 +1452,8 @@ object main {
     else if(line.toLowerCase == "help") {
       println("Commands:")
       println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
-      println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc. \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+      println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+      println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
       println("q - quit the game")
     }
     //draws a card from the deck and adds it face up to the discard pile
@@ -1402,8 +1468,11 @@ object main {
       //handle drawing a card and placing it face up in the discard pile
       val drawCard = drawStack.pop()
       discardStack.push(drawCard)
-      println("Discard Stack Length: " + discardStack.size)
+      //println("Discard Stack Length: " + discardStack.size)
       updateGame()
+    }
+    else if (line.split(" ").length < 4 ) {
+      println("That is an invalid command. Type \"help\" for a list and description of valid commands")
     }
     //handles moving a card by calling multiple functions to convert command to usable data
     else if (line.toLowerCase().contains("moveall")) {
@@ -1422,25 +1491,25 @@ object main {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString)
         cardToMoveSuit = cardToMove(2).toString
         currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        println("CS size: " + currentStack.size)
+        //println("CS size: " + currentStack.size)
         stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        println("STMTC: " + stackToMoveToColumn)
+        //println("STMTC: " + stackToMoveToColumn)
         stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
-        println("STMT size: " + stackToMoveTo.size)
+        //println("STMT size: " + stackToMoveTo.size)
         validCommand = true
-        println("multiple cards first")
+        //println("multiple cards first")
       }
       else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString))) {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
         cardToMoveSuit = cardToMove(1).toString
         currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        println("CS size: " + currentStack.size)
+        //println("CS size: " + currentStack.size)
         stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        println("STMTC: " + stackToMoveToColumn)
+        //println("STMTC: " + stackToMoveToColumn)
         stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
-        println("STMT size: " + stackToMoveTo.size)
+        //println("STMT size: " + stackToMoveTo.size)
         validCommand = true
-        println("multiple cards second")
+        //println("multiple cards second")
       }
       if (validCommand) {
         moveMultipleCards(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentStack, stackToMoveTo)
@@ -1468,7 +1537,7 @@ object main {
           stackToMoveToRow = stackToMoveTo(0).toString
           stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
           validCommand = true
-          println("first")
+          //println("first")
         }
       //If the card is anything except a 10  
       else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString)) 
