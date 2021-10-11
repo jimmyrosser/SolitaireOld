@@ -39,7 +39,7 @@ object main {
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = /*Deck.shuffleDeck(Deck.shuffleDeck(*/Deck.generateDeck//))
+  val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
@@ -650,6 +650,15 @@ object main {
     "             "
   }
 
+  /*
+  /////////////////////////////////////////////////////////////////////
+  -------------------- CONVERT STACK SIZE TO ASCII --------------------
+  /////////////////////////////////////////////////////////////////////
+
+  This function takes a size of a stacdk and converts it to an ASCII representation 
+  to be printed above the cards that have cards underneath them
+
+  */
   def convertStackSizeToASCII(size: Int): String = {
     if (size == 0) {
       "             "
@@ -694,7 +703,6 @@ object main {
       "*************"
     }
     else {
-      //println("ERROR IN CONVERT STACK SIZE TO ASCII")
       "ERROR"
     }
   }
@@ -749,35 +757,30 @@ object main {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack3.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
     }
     if(uncoveredStack4.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack4.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
     }
     if(uncoveredStack5.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack5.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
     }
     if(uncoveredStack6.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack6.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
     }
     if(uncoveredStack7.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
     else {
-      ////cardList = cardList :+ convertStackSizeToASCII(coveredStack7.size)
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
     }
     //Call reformatCardList to arrange the cards horizontally
@@ -908,10 +911,10 @@ object main {
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
     println("Commands:")
-      println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
-      println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
-      println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
-      println("q - quit the game")
+    println("draw -             draws as card from the draw deck and places it face up in the discard deck to be used")
+    println("move __ to __ -    allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+    println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
+    println("q -                quit the game")
     
     //set play style
     if(flipInput == "3") {
@@ -925,7 +928,6 @@ object main {
     else if(flipInput != "1") {
       println("Invalid input. Flipping 1 card at a time.")
     }
-    println("Flip " + cardsToFlip + " card at a time")
     //handle input during game
     while(running) {
       var input = readLine()
@@ -1072,6 +1074,19 @@ object main {
     foundAndNum
   }
 
+  /*
+  ////////////////////////////////////////////////////////////////
+  -------------------- FIND CARD IN UNCOVERED --------------------
+  ////////////////////////////////////////////////////////////////
+
+  This function takes card in value, suit format and finds it in 
+  all the uncovered stacks and returns a (boolean, int) tuple of 
+  if the card was found, and what stack it is located in in 
+  allStacksAndDiscardStack
+  
+  UNUSED
+
+  */
   def findCardInUncovered(value: Int, suit: String): (Boolean, Int) = {
     //instantiate variables for counting and returning
     var foundAndNum = (false, -1)
@@ -1099,6 +1114,17 @@ object main {
     foundAndNum
   }
   
+  /*
+  //////////////////////////////////////////////////////////////////////////////
+  -------------------- FIND CARD AND GET STACK IN UNCOVERED --------------------
+  //////////////////////////////////////////////////////////////////////////////
+
+  This function takes a card and returns the stack of uncovered cards that 
+  contains that card
+
+  UNUSED
+
+  */
   def findCardAndGetStackInUncovered(card: Card): Stack[Card] = {
     var tmpStack = Stack[Card]()
     for(stack <- uncoveredStacks) {
@@ -1167,8 +1193,6 @@ object main {
     for(stack <- allStacks) {
       for(card <- stack) {
         if(card.value == targetCard.value && card.suit == targetCard.suit) {
-          println("found stack")
-          println("Stack size: " + stack.size)
           stackToReturn = stack
         }
       }
@@ -1176,33 +1200,6 @@ object main {
     stackToReturn
 
   }
-  /*def getStackFromTopCard(category: String, value: Int): Stack[Card] = {
-    var returnStack = Stack[Card]()
-    if(category.toLowerCase() == "s") {
-      for(i <- 0 to 6) {
-        if(i == value) {
-          returnStack = uncoveredStacks(i)
-        }
-        else {
-          returnStack = Stack[Card]()
-        }
-      }
-    }
-    else if (category.toLowerCase == "a") {
-      for(i <- 0 to 3) {
-        if(i == value) {
-          returnStack = aceStacks(i)
-        }
-        else {
-          returnStack = Stack[Card]()
-        }
-      }
-    }
-    else {
-      returnStack = Stack[Card]()
-    }
-    returnStack
-  }*/
 
   /*
   ////////////////////////////////////////////////////
@@ -1216,55 +1213,40 @@ object main {
     if(location.toLowerCase == "s") {
       if(card2.value == card1.value + 1) {
         if((card1.suit == Suit.Hearts || card1.suit == Suit.Diamonds) && (card2.suit == Suit.Spades || card2.suit == Suit.Clubs)) {
-          println("CHECKMOVE TRUE 1")
           true
         }
         else if((card1.suit == Suit.Spades || card1.suit == Suit.Clubs) && (card2.suit == Suit.Hearts || card2.suit == Suit.Diamonds)) {
-          println("CHECKMOVE TRUE 2")
           true
         }
         else {
-          println("CHECKMOVE FALSE 1")
           false
         }
       }
       else if(card2.suit == Suit.None) {
-          println("CHECKMOVE TRUE 3")
           true
         }
       else {
-        println("CHECKMOVE FALSE 2")
         false
       }
     }
     else if (location.toLowerCase == "a") {
       if(card1.value == card2.value + 1) {
         if(card1.suit == card2.suit) {
-          println("CHECKMOVE TRUE 4")
           true
         }
         else {
-          println("CHECKMOVE FALSE 3")
           false
         }
       }
       else if(card2.suit == Suit.None) {
-        println("CHECKMOVE TRUE 5")
         true
       }
       else {
-        println(card2.suit)
-        println("Ace 1: " + ace1Stack.top.value + " " + ace1Stack.top.suit)
-        println("Ace 2: " + ace2Stack.top.value + " " + ace2Stack.top.suit)
-        println("Ace 3: " + ace3Stack.top.value + " " + ace3Stack.top.suit)
-        println("Ace 4: " + ace4Stack.top.value + " " + ace4Stack.top.suit)
-        println("CHECKMOVE FALSE 4")
         false
       }
     }
     else {
       println("ERROR IN CHECKMOVE")
-      println("CHECKMOVE FALSE 5")
       false
     }
   }
@@ -1355,7 +1337,6 @@ object main {
     else if (newLocRow.toLowerCase == "a") {
       val targetStack = aceStacks(newLocCol-1)
       if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "a")) {
-          println("checkMove: " + checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s"))
           if(currentCardIndex != -1) {
             card = popCorrectStack(currentCardIndex)
           }
@@ -1374,6 +1355,17 @@ object main {
   //if size > 1, moveCardStack (getting all cards below and including that card)
   //else, call regular move function
 
+
+  /*
+  /////////////////////////////////////////////////////////////
+  -------------------- MOVE MULTIPLE CARDS --------------------
+  /////////////////////////////////////////////////////////////
+
+  This function takes a main card to move, the current stack 
+  that it is in (which contains the other cards to be moved 
+  with it), and the stack to move to and moves the cards.
+
+  */
   def moveMultipleCards(mainCardToMove: Card, currentStack: Stack[Card], stackToMoveTo: Stack[Card]) = {
     if(currentStack.size > 1) {
       val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
@@ -1385,32 +1377,38 @@ object main {
   }
 
 
+  /*
+  //////////////////////////////////////////////////////////////////
+  -------------------- GET SUBSET OF CARD STACK --------------------
+  //////////////////////////////////////////////////////////////////
+
+  This function takes a target card that needs to be moved and the 
+  current stack it is in and returns a stack of all cards subsequent 
+  (including) the target card.
+
+  */
   def getSubsetOfCardStack(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
     val tmpStack = Stack[Card]()
     var card = Card(-1, Suit.None)
-    println("target card stack size: " + currentStack.size)
-    println("top card current: " + currentStack.top.value + " of " + currentStack.top.suit)
-    println("target card: " + targetCard.value + " of " + targetCard.suit)
     while(currentStack.top.value != targetCard.value) {
-      println("popping card")
       card = currentStack.pop()
-      println("pushing card")
       tmpStack.push(card)
     }
     card = currentStack.pop()
     tmpStack.push(card)
-    println("tmpstack:")
-    tmpStack.foreach(c => println(c.value + " " + c.suit))
     tmpStack
   }
 
-  /*def moveCardStack(cardsToMove: Stack[Card], locCol: Int) = {
-    var tmpStack = Stack[Card]()    
-    tmpstack.pushAll(cardsToMove).reverse
-    val targetStack = uncoveredStacks(locCol-1)
-    targetStack.pushAll(tmpStack)
-  }*/
+  /*
+  ////////////////////////////////////////////////////////////////////
+  -------------------- HANDLE KING TO EMPTY STACK --------------------
+  ////////////////////////////////////////////////////////////////////
 
+  This function check to see if the stack that a king is being moved 
+  to has a blank card on it. Ifit does, it pops the blank card in 
+  perparation for the king to be pushed.
+
+  */
   def handleKingToEmptyStack(newLocCol: Int) = {
     val targetStack = uncoveredStacks(newLocCol-1)
     if(targetStack.isEmpty) {
@@ -1425,22 +1423,24 @@ object main {
 
   }
 
+  /*
+  ///////////////////////////////////////////////////////////////
+  -------------------- CHECK IF TOP IS BLANK --------------------
+  ///////////////////////////////////////////////////////////////
+
+  This function takes a stack of cards and returns a boolean of 
+  if the top card is a blank card.
+
+  */
   def checkIfTopIsBlank(stack: Stack[Card]):Boolean = {
     if(stack.top.value == -1 && stack.top.suit == Suit.None) {
-      return true
+      true
     }
     else {
       println("top card of stack is not empty")
       false
     }
   }
-
-  //Commands
-  /*
-    draw: draws a new card from the deck and places it face up in the discard deck to be used
-    move VS to (AX(1,2,3,4) or SX(1,2,3,4,5,6,7)): moves a specific card to the top of a different stack
-    undo: undoes the last move made
-  */
   
   /*
   //////////////////////////////////////////////////////
@@ -1456,10 +1456,10 @@ object main {
     }
     else if(line.toLowerCase == "help") {
       println("Commands:")
-      println("draw - draws as card from the draw deck and places it face up in the discard deck to be used")
-      println("move __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+      println("draw -             draws as card from the draw deck and places it face up in the discard deck to be used")
+      println("move __ to __ -    allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
       println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
-      println("q - quit the game")
+      println("q -                quit the game")
     }
     //draws a card from the deck and adds it face up to the discard pile
     else if(line.toLowerCase == "draw")
