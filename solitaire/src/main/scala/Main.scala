@@ -39,7 +39,7 @@ object main {
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
+  val deck = /*Deck.shuffleDeck(Deck.shuffleDeck(*/Deck.generateDeck//))
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
@@ -472,7 +472,7 @@ object main {
     var reformattedCardList = List[String]()
     reformattedCardList = reformatCardList(cardList)
     //set top of card which will never change
-    var cardToPrint = "_____________" + ","
+    var cardToPrint = "-------------" + ","
     //loop through all the lines of the cards and only select the ones that have the name of the card
     var index = 0
     var cardLengthIndex = 0
@@ -851,11 +851,16 @@ object main {
     //set play style
     if(flipInput == "3") {
       cardsToFlip = 3
+      println("Flipping 3 cards at a time.")
+
+    }
+    else if (flipInput == "1") {
+      cardsToFlip = 1
+      println("Flipping 1 card at a time.")
     }
     else if(flipInput != "1") {
-      println("Error with flip count handling")
+      println("Error with flip count handling. Flipping 1 card at a time.")
     }
-    println("Flip " + cardsToFlip + " card at a time")
     //handle input during game
     while(running) {
       var input = readLine()
@@ -1399,10 +1404,30 @@ object main {
         discardStack.clear()
         updateGame()
       }
+      else if(cardsToFlip == 3 && drawStack.length >= 3) {
+        var card1 = drawStack.pop
+        discardStack.push(card1)
+        var card2 = drawStack.pop
+        discardStack.push(card2)
+        var card3 = drawStack.pop
+        discardStack.push(card3)
+        updateGame()
+      }
+      else if(cardsToFlip == 3 && drawStack.length == 2) {
+        var card1 = drawStack.pop
+        discardStack.push(card1)
+        var card2 = drawStack.pop
+        discardStack.push(card2)
+        updateGame()
+      }
+      else if(cardsToFlip == 3 && drawStack.length == 1) {
+        var card1 = drawStack.pop
+        discardStack.push(card1)
+        updateGame()
+      }
       //handle drawing a card and placing it face up in the discard pile
       val drawCard = drawStack.pop()
       discardStack.push(drawCard)
-      println("Discard Stack Length: " + discardStack.size)
       updateGame()
     }
     //handles moving a card by calling multiple functions to convert command to usable data
@@ -1418,29 +1443,31 @@ object main {
       var stackToMoveTo = Stack[Card]()
       var validCommand = false
 
+      //check if current card is king
+      //check if stack to move to has a blank card on top
+      //if it does, pop the card 
+      //push all subsequent cards
+      //else return an error
+
       if(cardToMove.size == 3 && (validateCard(convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString), cardToMove(2).toString))) {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString)
         cardToMoveSuit = cardToMove(2).toString
         currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        println("CS size: " + currentStack.size)
         stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        println("STMTC: " + stackToMoveToColumn)
         stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
-        println("STMT size: " + stackToMoveTo.size)
         validCommand = true
-        println("multiple cards first")
       }
       else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString))) {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
         cardToMoveSuit = cardToMove(1).toString
         currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        println("CS size: " + currentStack.size)
         stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        println("STMTC: " + stackToMoveToColumn)
         stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
-        println("STMT size: " + stackToMoveTo.size)
+        if(cardToMoveValue == 13 && checkIfTopIsBlank(stackToMoveTo)) {
+          stackToMoveTo.pop
+
+        }
         validCommand = true
-        println("multiple cards second")
       }
       if (validCommand) {
         moveMultipleCards(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentStack, stackToMoveTo)
@@ -1502,6 +1529,4 @@ object main {
   }
 }
 
-//Add check for card going to empty stack (or stack with blank top card), must be a king
-//Add remove blank card when moving a stack of cards and the main card is a king
-//Add indicator for number of cards underneath stack
+//Got flipping 3 cards at a time working, and got king moving to empty space properly

@@ -1,5 +1,5 @@
-[0m[[0m[33mwarn[0m] [0m[0m[33m-- Deprecation Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:1333:42 [0m[0m
-[0m[[0m[33mwarn[0m] [0m[0m[33m1333 |[0m    tmpStack.foreach([36mc[0m => println(c.value + [31m" "[0m + c.suit))[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m-- Deprecation Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:1338:42 [0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m1338 |[0m    tmpStack.foreach([36mc[0m => println(c.value + [31m" "[0m + c.suit))[0m
 [0m[[0m[33mwarn[0m] [0m[0m     |                                  [33m^^^^^^^^^[0m[0m
 [0m[[0m[33mwarn[0m] [0m[0m     |[33mmethod[0m [35m+[0m in [33mclass[0m [35mInt[0m is deprecated since 2.13.0: Adding a number and a String is deprecated. Use the string interpolation `s"$num$str"`[0m
 [0m[[0m[33mwarn[0m] [0m[0mone warning found[0m

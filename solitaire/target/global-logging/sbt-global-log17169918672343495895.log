@@ -1,0 +1,10 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(a4ef33a2-bd44-42dd-a2e4-ea7f51e96fa3), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@afb7b03, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/target/scala-3.0.2/classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m-- Deprecation Warning: /Users/jimmyrosser/VSCodeProjects/Solitaire/solitaire/src/main/scala/Main.scala:1338:42 [0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m1338 |[0m    tmpStack.foreach([36mc[0m => println(c.value + [31m" "[0m + c.suit))[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |                                  [33m^^^^^^^^^[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |[33mmethod[0m [35m+[0m in [33mclass[0m [35mInt[0m is deprecated since 2.13.0: Adding a number and a String is deprecated. Use the string interpolation `s"$num$str"`[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
