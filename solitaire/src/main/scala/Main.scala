@@ -907,27 +907,44 @@ object main {
     //read in name
     var name = readLine()
     println(s"Hello, $name! \nWelcome to Solitaire!")
+    println()
+    println("Just a quick explanation of how game is structured.")
+    println()
+    println("The four piles at the top are the ace piles and can be called by command as: A1, A2, A3, and A4.")
+    println("The seven piles in the second row are the main solitaire piles and can be called by command as: S1, S2, S3, S4, S5, S6, and S7.")
+    println("The two piles in the last row are the discard pile and the draw pile respectively. When you draw, a card will be removed from the draw pile and placed face up in the discard pile to be used.")
+    println("Commands to use will print when the game is started.")
+    println()
+    println("Happy shuffling!")
+    println()
     //prompt for play style
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
-    println("Commands:")
-    println("draw -             draws as card from the draw deck and places it face up in the discard deck to be used")
-    println("move __ to __ -    allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
-    println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
-    println("q -                quit the game")
     
     //set play style
     if(flipInput == "3") {
       cardsToFlip = 3
-      println("Flipping 3 cards at a time.")
     }
     else if(flipInput == "1") {
       cardsToFlip = 1
-      println("Flipping 1 card at a time.")
     }
     else if(flipInput != "1") {
       println("Invalid input. Flipping 1 card at a time.")
     }
+
+    println("Commands:")
+    println("draw -             draws 1 or 3 cards from the draw deck and places it face up in the discard deck to be used")
+    println()
+    println("move __ to __ -    allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+    println()
+    println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
+    println()
+    println("q -                quit the game")
+
+    println()
+
+    updateGame()
+
     //handle input during game
     while(running) {
       var input = readLine()
