@@ -1508,6 +1508,10 @@ object main {
         discardStack.push(card1)
         updateGame()
       }
+      else if(cardsToFlip == 1) {
+        discardStack.push(drawStack.pop)
+        updateGame()
+      }
       //handle drawing a card and placing it face up in the discard pile
       //println("Discard Stack Length: " + discardStack.size)
       updateGame()
