@@ -34,14 +34,20 @@ object main {
   //All stacks where playable cards could be/moves could be made
   var allStacks = List[Stack[Card]]()
 
+  //Discard and draw stack
   var discardStack = Stack[Card]()
   var drawStack = Stack[Card]()
+
+  //Cards to flip per draw
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
   val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
   var deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
+
+  //List of all the stacks (ace and solitaire) as well as the discard stack
+  //Used for searching for cards to move
   var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
       ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
 
@@ -55,64 +61,24 @@ object main {
 
   */
   def main(args: Array[String]): Unit = {
+    //Deal out the cards into the stack
     dealGame()
-    updateGame()
+    //Update the collections of stacks after the individual stacks have been updated
+    updateGameWithoutPrint()
+    //Begin the game
     playGame()
   }
 
   /*
-  /////////////////////////////////////////////////////////////
-  -------------------- GET TEXT FROM VALUE --------------------
-  /////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  --------------------------------------------------------------
+  -------------------- CONVERSION FUNCTIONS --------------------
+  --------------------------------------------------------------
+  //////////////////////////////////////////////////////////////
 
-  This function takes an integer card value (1-13) and converts that to
-  a string to be used in a sentance
+  Functions that handle converting values from or to cards
 
   */
-  def getTextFromValue(value: Int): String = {
-    if(value == 1) {
-      "Ace"
-    }
-    else if (value == 2) {
-      "Two"
-    }
-    else if (value == 3) {
-      "Three"
-    }
-    else if (value == 4) {
-      "Four"
-    }
-    else if (value == 5) {
-      "Five"
-    }
-    else if (value == 6) {
-      "Six"
-    }
-    else if (value == 7) {
-      "Seven"
-    }
-    else if (value == 8) {
-      "Eight"
-    }
-    else if (value == 9) {
-      "Nine"
-    }
-    else if (value == 10) {
-      "Ten"
-    }
-    else if (value == 11) {
-      "Jack"
-    }
-    else if (value == 12) {
-      "Queen"
-    }
-    else if (value == 13) {
-      "King"
-    }
-    else {
-      "ERROR"
-    }
-  }
 
   /*
   ////////////////////////////////////////////////////////////////
@@ -124,6 +90,7 @@ object main {
 
   */
   def convertValueForCard(value: Int) = {
+    //Ace conversion to card representation from value
     if(value == 1) {
       "A"
     }
@@ -154,12 +121,15 @@ object main {
     else if (value == 10) {
       "10"
     }
+    //Jack conversion to card representation from value
     else if (value == 11) {
       "J"
     }
+    //Queen conversion to card representation from value
     else if (value == 12) {
       "Q"
     }
+    //King conversion to card representation from value
     else if (value == 13) {
       "K"
     }
@@ -178,6 +148,7 @@ object main {
 
   */
   def convertValueFromCard(value: String): Int = {
+    //Ace conversion to value from card representation
     if(value.toLowerCase == "a") {
       1
     }
@@ -211,12 +182,15 @@ object main {
     else if (value.toLowerCase == "10") {
       10
     }
+    //Jack conversion to value from card representation
     else if (value.toLowerCase == "j") {
       11
     }
+    //Queen conversion to value from card representation
     else if (value.toLowerCase == "q") {
       12
     }
+    //King conversion to value from card representation
     else if (value.toLowerCase == "k") {
       13
     }
@@ -253,6 +227,18 @@ object main {
   }
 
   /*
+  /////////////////////////////////////////////////////////////////////
+  ---------------------------------------------------------------------
+  -------------------- STRING CONVERSION FUNCTIONS --------------------
+  ---------------------------------------------------------------------
+  /////////////////////////////////////////////////////////////////////
+
+  Functions that handle converting a card to a string for 
+  printing to the board
+
+  */
+
+  /*
   ///////////////////////////////////////////////////////////////
   -------------------- CONVERT CARD TO ASCII --------------------
   ///////////////////////////////////////////////////////////////
@@ -265,7 +251,9 @@ object main {
     val value = card.value
     val suit = card.suit
     val shortSuit = suit.toString.head
+    //Hearts
     if(suit == Suit.Hearts) {
+      //Single digit and single character (face cards)
       if(value != 10) {
         return(
         "-------------" + "," + 
@@ -284,6 +272,7 @@ object main {
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
+      //Double digit
       else if(value == 10) {
         return(
         "-------------" + "," + 
@@ -306,7 +295,9 @@ object main {
           return("ERROR IN convertCardtoASCII HEARTS ELSE")
       }
     }
+    //Diamonds
     else if(suit == Suit.Diamonds) {
+      //Single digit and single character (face cards)
       if(value != 10) {
         return(
         "-------------" + "," + 
@@ -325,6 +316,7 @@ object main {
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
+      //Double digit
       else if(value == 10) {
         return(
         "-------------" + "," + 
@@ -347,7 +339,9 @@ object main {
           return("ERROR IN convertCardtoASCII DIAMONDS ELSE")
       }
     }
+    //Spades
     else if(suit == Suit.Spades) {
+      //Single digit and single character (face cards)
       if (value != 10) {
         return(
         "-------------" + "," + 
@@ -366,6 +360,7 @@ object main {
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
+      //Double digit
       else if(value == 10) {
         return(
         "-------------" + "," + 
@@ -388,7 +383,9 @@ object main {
           return("ERROR IN convertCardtoASCII SPADES ELSE")
       }
     }
+    //Clubs cards
     else if(suit == Suit.Clubs) {
+      //Single digit and single character (face cards)
       if(value != 10) {
         return(
         "-------------" + "," + 
@@ -407,6 +404,7 @@ object main {
         "|        " + convertValueForCard(value) + shortSuit + " |" + "," + 
         "-------------")
       }
+      //Double digit
       else if(value == 10) {
         return(
         "-------------" + "," + 
@@ -429,6 +427,7 @@ object main {
           return("ERROR IN convertCardtoASCII CLUBS ELSE")
       }
     }
+    //Return empty card
     else if(suit == Suit.None) {
       return(
           "-------------" + "," + 
@@ -447,12 +446,14 @@ object main {
           "|           |" + "," + 
           "-------------")
     }
+    //Error return
     else {
       return("ERROR IN convertCardtoASCII LAST ELSE")
     }
   }
 
   def convertCardToASCIIWithSize(size: Int): String = {
+    //If size is 2 digits
     if(size > 9) {
       val stringSize = size.toString()
         "-------------" + "," + 
@@ -461,11 +462,9 @@ object main {
         "|           |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
-        //
         "|           |" + "," +
         "|    " + stringSize(0) + " " + stringSize(1) + "    |" + "," + 
         "|           |" + "," + 
-        //
         "|           |" + "," + 
         "|           |" + "," + 
         "|           |" + "," + 
@@ -473,6 +472,7 @@ object main {
         "|           |" + "," + 
         "-------------"
     }
+    //If size is one digit
     else {
         "-------------" + "," + 
         "|           |" + "," + 
@@ -480,11 +480,9 @@ object main {
         "|           |" + "," + 
         "|           |" + "," + 
         "|           |" + "," +
-        //
         "|           |" + "," +
         "|     " + size + "     |" + "," + 
         "|           |" + "," + 
-        //
         "|           |" + "," + 
         "|           |" + "," + 
         "|           |" + "," + 
@@ -492,108 +490,6 @@ object main {
         "|           |" + "," + 
         "-------------"
     }
-  }
-
-  /*
-  ////////////////////////////////////////////////////////////////////
-  -------------------- CONVERT CARD PILE TO ASCII --------------------
-  ////////////////////////////////////////////////////////////////////
-
-  This function converts a whole stack of cards into a single card to be printed,
-  allowing the player to see all cards, even cards on top of other cards 
-  */
-  def convertCardPileToASCII(cardStack: Stack[Card]): String = {
-    //reverse the card stack to print cards in correct orders
-    val reversedCardStack = cardStack.reverse
-    //convert all cards in stack to printable versions
-    var cardList = List[List[String]]()
-    for(card <- reversedCardStack) {
-      cardList = cardList :+ convertCardToASCII(card).split(",").toList
-    }
-    //reformat that list so they print horizontally
-    var reformattedCardList = List[String]()
-    reformattedCardList = reformatCardList(cardList)
-    //set top of card which will never change
-    var cardToPrint = "-------------" + ","
-    //loop through all the lines of the cards and only select the ones that have the name of the card
-    var index = 0
-    var cardLengthIndex = 0
-    for(c <- reformattedCardList) {
-      if(index > cardList.size && index < cardList.size*2+1 && cardLengthIndex < 14) {
-        cardToPrint = cardToPrint + (c.trim + ",")
-        cardLengthIndex += 1
-        index += 1
-      }
-      else {
-        index += 1
-      }
-    }
-    //add blank spots for all other spaces not taken up by stacked cards
-    while(cardLengthIndex < 13) {
-      cardToPrint = cardToPrint + "|           |" + ","
-      cardLengthIndex += 1
-    }
-    //add bottom line
-    cardToPrint = cardToPrint + ("-------------" + ",")
-    //return
-    cardToPrint
-    
-  }
-
-  /*
-  ////////////////////////////////////////////////////////////////////
-  -------------------- PRINT SINGLE CARD OR STACK --------------------
-  ////////////////////////////////////////////////////////////////////
-
-  This function takes a stack of cards and deturmines if the top card should be printed, 
-  or if the whole stack should be printed
-  
-  */
-  def printSingleCardOrStack(stack: Stack[Card]): String = {
-    if(stack.length > 1) {
-      convertCardPileToASCII(stack)
-    }
-    else if(stack.length == 1) {
-      convertCardToASCII(stack.top)
-    }
-    else {
-      "ERROR IN PRINT SINGLE CARD OR STACK"
-    }
-  }
-
-  /*
-  ////////////////////////////////////////////////////
-  -------------------- PRINT CARD --------------------
-  ////////////////////////////////////////////////////
-
-  This function takes a list of cards (represented as strings) and prints them
-  
-  */
-  def printCard(card: List[String]) = {
-    for(i <- card) {
-      print(i)
-    }
-  }
-
-  /*
-  /////////////////////////////////////////////////////////
-  -------------------- REFORMAT CARD LIST --------------------
-  /////////////////////////////////////////////////////////
-
-  This function takes a list of cards or turns it into a list of strings
-  so that the cards can be printed horizontally
-
-  */
-  def reformatCardList(cards: List[List[String]]):List[String] = {
-    var returnLine = List[String]()
-    var rowCounter = 0
-    //only make rows that are less than cardHeight + 1
-    while(rowCounter < 15) {
-      cards.foreach(card => returnLine = returnLine :+ (card(rowCounter) + "    "))
-      returnLine = returnLine :+ "\n"
-      rowCounter += 1
-    }
-    returnLine
   }
 
   /*
@@ -709,6 +605,130 @@ object main {
 
   /*
   ////////////////////////////////////////////////////
+  -------------------- PRINT CARD --------------------
+  ////////////////////////////////////////////////////
+
+  This function takes a list of cards (represented as strings) and prints them
+  
+  */
+  def printCard(card: List[String]) = {
+    //Go through the lines of a card and print them
+    //Usually this "card" is actually multiple cards represneted as a list of strings
+    for(i <- card) {
+      print(i)
+    }
+  }
+
+  /*
+  /////////////////////////////////////////////////////////
+  -------------------- REFORMAT CARD LIST --------------------
+  /////////////////////////////////////////////////////////
+
+  This function takes a list of cards or turns it into a list of strings
+  so that the cards can be printed horizontally
+
+  */
+  def reformatCardList(cards: List[List[String]]):List[String] = {
+    //Make variables fr the return and the counter
+    var returnLine = List[String]()
+    var rowCounter = 0
+    //For every row in the list of list of string
+    while(rowCounter < 15) {
+      //Add a horizontal space between the cards
+      cards.foreach(card => returnLine = returnLine :+ (card(rowCounter) + "    "))
+      //Add a new line for the next line
+      returnLine = returnLine :+ "\n"
+      //Increment
+      rowCounter += 1
+    }
+    //Return the line
+    returnLine
+  }
+
+  /*
+  ////////////////////////////////////////////////////////////////////
+  -------------------- CONVERT CARD PILE TO ASCII --------------------
+  ////////////////////////////////////////////////////////////////////
+
+  This function converts a whole stack of cards into a single card to be printed,
+  allowing the player to see all cards, even cards on top of other cards 
+  */
+  def convertCardPileToASCII(cardStack: Stack[Card]): String = {
+    //reverse the card stack to print cards in correct orders
+    val reversedCardStack = cardStack.reverse
+    //convert all cards in stack to printable versions
+    var cardList = List[List[String]]()
+    for(card <- reversedCardStack) {
+      cardList = cardList :+ convertCardToASCII(card).split(",").toList
+    }
+    //reformat that list so they print horizontally
+    var reformattedCardList = List[String]()
+    reformattedCardList = reformatCardList(cardList)
+    //set top of card which will never change
+    var cardToPrint = "-------------" + ","
+    //loop through all the lines of the cards and only select the ones that have the name of the card
+    var index = 0
+    var cardLengthIndex = 0
+    for(c <- reformattedCardList) {
+      if(index > cardList.size && index < cardList.size*2+1 && cardLengthIndex < 14) {
+        cardToPrint = cardToPrint + (c.trim + ",")
+        cardLengthIndex += 1
+        index += 1
+      }
+      else {
+        index += 1
+      }
+    }
+    //add blank spots for all other spaces not taken up by stacked cards
+    while(cardLengthIndex < 13) {
+      cardToPrint = cardToPrint + "|           |" + ","
+      cardLengthIndex += 1
+    }
+    //add bottom line
+    cardToPrint = cardToPrint + ("-------------" + ",")
+    //return
+    cardToPrint
+    
+  }
+
+  /*
+  ////////////////////////////////////////////////////////////////////
+  -------------------- PRINT SINGLE CARD OR STACK --------------------
+  ////////////////////////////////////////////////////////////////////
+
+  This function takes a stack of cards and deturmines if the top card should be printed, 
+  or if the whole stack should be printed
+  
+  */
+  def printSingleCardOrStack(stack: Stack[Card]): String = {
+    //If the passed in stack has more than one card, call convertCardPileToASCII on that stack
+    if(stack.length > 1) {
+      convertCardPileToASCII(stack)
+    }
+    //If the passed in stack has exactly one card, convert just that card to ascii
+    else if(stack.length == 1) {
+      convertCardToASCII(stack.top)
+    }
+    //Otherwise, error out
+    else {
+      "ERROR IN PRINT SINGLE CARD OR STACK"
+    }
+  }
+
+  /*
+  /////////////////////////////////////////////////////////////
+  -------------------------------------------------------------
+  -------------------- MAIN GAME FUNCTIONS --------------------
+  -------------------------------------------------------------
+  /////////////////////////////////////////////////////////////
+
+  Functions that are the main game functions that call other 
+  helper functions
+
+  */
+
+  /*
+  ////////////////////////////////////////////////////
   -------------------- PRINT GAME --------------------
   ////////////////////////////////////////////////////
 
@@ -735,15 +755,19 @@ object main {
 
     //Makes a list of the solitaire spots in the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var cardList = List[List[String]]()
+    //If the first stack is empty, add en empty card
     if(uncoveredStack1.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack1).split(",").toList
     }
+    //If the second stack is empty, add an empty card
     if(uncoveredStack2.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise print the sizes of the stacks above the cards to indicate the number of cards underneath
     else {
       println("             " + "    " + convertStackSizeToASCII(coveredStack2.size) 
             + "    " + convertStackSizeToASCII(coveredStack3.size)
@@ -753,33 +777,43 @@ object main {
             + "    " + convertStackSizeToASCII(coveredStack7.size))
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack2).split(",").toList
     }
+    //If the third stack is empty, add an empty card
     if(uncoveredStack3.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack 
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
     }
+    //If the fourth stack is empty, add an empty card
     if(uncoveredStack4.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
     }
+    //If the fifth stack is empty, add an empty card
     if(uncoveredStack5.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
     }
+    //If the sixth stack is empty, add an empty card
     if(uncoveredStack6.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
     }
+    //If the seventh stack is empty, add an empty card
     if(uncoveredStack7.isEmpty) {
       cardList = cardList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, print the card usng printSinglecardOrStack
     else {
       cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
     }
@@ -798,26 +832,26 @@ object main {
     //Makes a list of the discard deck and draw deck below the main section of the game with blank cards for spacing. 
     //Adds the top card to the list and adds an empty card if there are no cards in the stack
     var drawCardsList = List[List[String]]()
+    //Add blank cards to get spacing correct
     drawCardsList = 
       drawCardsList :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList 
         :+ printBlankCard().split(",").toList
+    //If the discard stack is empty, add an empty card
     if(discardStack.isEmpty) {
       drawCardsList = drawCardsList :+ printEmptyCard().split(",").toList
     }
+    //Otherwise, check the top card of the discard stack and add it to the list
     else {
       drawCardsList = drawCardsList :+ convertCardToASCII(discardStack.top).split(",").toList
     }
+    //Print the number of cards in the stack in the middle of the draw deck
     drawCardsList = drawCardsList :+ convertCardToASCIIWithSize(drawStack.size).split(",").toList
     //call reformatCardList to arrange the cards horizontally
     var drawCards = reformatCardList(drawCardsList)
-    //Print the cards
-    if(deckStack.size < 14) {
-      print("                                                                                                      ")
-      println(convertStackSizeToASCII(deckStack.size))
-    }
+    //Print the drawcards reformatted list of cards
     printCard(drawCards)
   }
 
@@ -872,23 +906,6 @@ object main {
   }
 
   /*
-  ////////////////////////////////////////////////////////
-  -------------------- REBUILD STACKS --------------------
-  ////////////////////////////////////////////////////////
-
-  This function rebuilds the lists of stacks after stacks have been updated
-
-  */
-  def rebuildStacks(): Unit = {
-    uncoveredStacks = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
-    coveredStacks = List(coveredStack2, coveredStack3, coveredStack4, coveredStack5, coveredStack6, coveredStack7)
-    aceStacks =  List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
-    allStacks = uncoveredStacks ++ aceStacks
-    allStacksAndDiscardStack = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
-      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
-  }
-
-  /*
   ///////////////////////////////////////////////////
   -------------------- PLAY GAME --------------------
   ///////////////////////////////////////////////////
@@ -906,6 +923,7 @@ object main {
 
     //read in name
     var name = readLine()
+    //Print introductory info, rules, and mechanics
     println(s"Hello, $name! \nWelcome to Solitaire!")
     println()
     println("Just a quick explanation of how game is structured.")
@@ -921,17 +939,20 @@ object main {
     println("Would you like to flip 1 card at a time or three cards at a time? (1 or 3)")
     var flipInput = readLine()
     
-    //set play style
+    //set cards to flip to 3
     if(flipInput == "3") {
       cardsToFlip = 3
     }
+    //set cards to flip to 1
     else if(flipInput == "1") {
       cardsToFlip = 1
     }
+    //Input error checking
     else if(flipInput != "1") {
       println("Invalid input. Flipping 1 card at a time.")
     }
 
+    //Print valid commands
     println("Commands:")
     println("draw -             draws 1 or 3 cards from the draw deck and places it face up in the discard deck to be used")
     println()
@@ -943,6 +964,7 @@ object main {
 
     println()
 
+    //Print the game board
     updateGame()
 
     //handle input during game
@@ -960,6 +982,17 @@ object main {
       }
     }
   }
+  /*
+  ////////////////////////////////////////////////////////////
+  ------------------------------------------------------------
+  -------------------- UPDATING FUNCTIONS --------------------
+  ------------------------------------------------------------
+  ////////////////////////////////////////////////////////////
+
+  Functions that handle updating different aspects of the game 
+  (stacks, etc)
+
+  */
 
   /*
   /////////////////////////////////////////////////////
@@ -971,9 +1004,28 @@ object main {
 
   */
   def updateGame(): Unit = {
+    //Push blank cards onto any necessary stacks and pop from covered stack if necessary
     fixStacksAfterMove()
+    //Rebuild the collections of stacks after modiftying the individual stacks with moves
     rebuildStacks()
+    //Reprint the board after updates
     printGame()
+  }
+
+  /*
+  /////////////////////////////////////////////////////
+  -------------- UPDATE GAME WITHOUT PRINT-------------
+  /////////////////////////////////////////////////////
+
+  This function updates the game by updating the stacks, 
+  rebuilding the lists of stacks, but does not print the board
+
+  */
+  def updateGameWithoutPrint(): Unit = {
+    //Push blank cards onto any necessary stacks and pop from covered stack if necessary
+    fixStacksAfterMove()
+    //Rebuild the collections of stacks after modiftying the individual stacks with moves
+    rebuildStacks()
   }
 
   /*
@@ -987,72 +1039,116 @@ object main {
 
   */
   def fixStacksAfterMove() = {
+    //Set temporary card variable
     var card: Card = null
+    //If the first uncovered stack is empty, push on a blank card
     if(uncoveredStack1.isEmpty) {
       uncoveredStack1.push(Card(-1, Suit.None))
     }
-
+    //If the second uncovered stack is empty and the second covered stack is empty, push on a blank card
     if(uncoveredStack2.isEmpty && coveredStack2.isEmpty) {
       uncoveredStack2.push(Card(-1, Suit.None))
     }
+    //If the second uncovered stack is empty and the covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack2.isEmpty && !(coveredStack2.isEmpty)) {
       card = coveredStack2.pop()
       uncoveredStack2.push(card)
     }
-
+    //If the third uncovered stack is empty and the third covered stack is empty, push on a blank card
     if(uncoveredStack3.isEmpty && coveredStack3.isEmpty) {
       uncoveredStack3.push(Card(-1, Suit.None))
     }
+    //If the third uncovered stack is empty and the third covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack3.isEmpty && !(coveredStack3.isEmpty)) {
       card = coveredStack3.pop()
       uncoveredStack3.push(card)
     }
-
+    //If the fourth uncovered stack is empty and the fourth covered stack is empty, push on a blank card
     if(uncoveredStack4.isEmpty && coveredStack4.isEmpty) {
       uncoveredStack4.push(Card(-1, Suit.None))
     }
+    //If the fourth uncovered stack is empty and the fourth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack4.isEmpty && !(coveredStack4.isEmpty)) {
       card = coveredStack4.pop()
       uncoveredStack4.push(card)
     }
-
+    //If the fifth uncovered stack is empty and the fifth covered stack is empty, push on a blank card
     if(uncoveredStack5.isEmpty && coveredStack5.isEmpty) {
       uncoveredStack5.push(Card(-1, Suit.None))
     }
+    //If the fifth uncovered stack is empty and the fifth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack5.isEmpty && !(coveredStack5.isEmpty)) {
       card = coveredStack5.pop()
       uncoveredStack5.push(card)
     }
-
+    //If the sixth uncovered stack is empty and the sixth covered stack is empty, push on a blank card
     if(uncoveredStack6.isEmpty && coveredStack6.isEmpty) {
       uncoveredStack6.push(Card(-1, Suit.None))
     }
+    //If the sixth uncovered stack is empty and the sixth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack6.isEmpty && !(coveredStack6.isEmpty)) {
       card = coveredStack6.pop()
       uncoveredStack6.push(card)
     }
-
+    //If the seventh uncovered stack is empty and the seventh covered stack is empty, push on a blank card
     if(uncoveredStack7.isEmpty && coveredStack7.isEmpty) {
       uncoveredStack7.push(Card(-1, Suit.None))
     }
+    //If the seventh uncovered stack is empty and the seventh covered stack is not empty, prop from covered stack and push it onto the uncovered stack
     else if(uncoveredStack7.isEmpty && !(coveredStack7.isEmpty)) {
       card = coveredStack7.pop()
       uncoveredStack7.push(card)
     }
-
+    //If the first ace stack is empty, push on a blank card
     if(ace1Stack.isEmpty) {
       ace1Stack.push(Card(-1, Suit.None))
     }
+    //If the second ace stack is empty, push on a blank card
     if(ace2Stack.isEmpty) {
       ace2Stack.push(Card(-1, Suit.None))
     }
+    //If the third ace stack is empty, push on a blank card
     if(ace3Stack.isEmpty) {
       ace3Stack.push(Card(-1, Suit.None))
     }
+    //If the fourth ace stack is empty, push on a blank card
     if(ace4Stack.isEmpty) {
       ace4Stack.push(Card(-1, Suit.None))
     }
   }
+
+  /*
+  ////////////////////////////////////////////////////////
+  -------------------- REBUILD STACKS --------------------
+  ////////////////////////////////////////////////////////
+
+  This function rebuilds the lists of stacks after stacks have been updated
+
+  */
+  def rebuildStacks(): Unit = {
+    //Rebuild uncoveredStack collection
+    uncoveredStacks = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
+    //Rebuild coveredStack collection
+    coveredStacks = List(coveredStack2, coveredStack3, coveredStack4, coveredStack5, coveredStack6, coveredStack7)
+    //Rebuild aceStack collection
+    aceStacks =  List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
+    //Rebuild allStack collection
+    allStacks = uncoveredStacks ++ aceStacks
+    //Rebuild allStacksAndDiscardStack collection
+    allStacksAndDiscardStack = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
+      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
+  }
+
+  /*
+  ////////////////////////////////////////////////////////////
+  ------------------------------------------------------------
+  -------------------- SEARCHING FUNCTIONS -------------------
+  ------------------------------------------------------------
+  ////////////////////////////////////////////////////////////
+
+  Functions that handle searching for/in different things
+
+  */
 
   /*
   //////////////////////////////////////////////////////////
@@ -1092,72 +1188,40 @@ object main {
   }
 
   /*
-  ////////////////////////////////////////////////////////////////
-  -------------------- FIND CARD IN UNCOVERED --------------------
-  ////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  -------------------- GET STACK FROM TOP CARD --------------------
+  /////////////////////////////////////////////////////////////////
 
-  This function takes card in value, suit format and finds it in 
-  all the uncovered stacks and returns a (boolean, int) tuple of 
-  if the card was found, and what stack it is located in in 
-  allStacksAndDiscardStack
-  
-  UNUSED
+  This function takes a card and returns the stack that that card is in
 
   */
-  def findCardInUncovered(value: Int, suit: String): (Boolean, Int) = {
-    //instantiate variables for counting and returning
-    var foundAndNum = (false, -1)
-    var counter = 0
-    //go through all 13 stacks
-    while(counter < 12) {
-      if(!uncoveredStacks(counter).isEmpty) {
-        //set current top card
-        val current = uncoveredStacks(counter).top
-        //if the card matches the values apssed in, set tuple to reflect that and kills the loop
-        if(current.value == value && current.suit == convertSuitForCard(suit)) {
-          foundAndNum = (true, counter)
-          counter = 12
+  def getStackFromCard(targetCard: Card): Stack[Card] = {
+    //Set a return stack variable
+    var stackToReturn = Stack[Card]()
+    //Loop through all the stacks (minus the draw stack)
+    for(stack <- allStacks) {
+      //Loop through all the cards in a specific stack
+      for(card <- stack) {
+        //If the card is the same as the target card by value comparison, return that stack
+        if(card.value == targetCard.value && card.suit == targetCard.suit) {
+          stackToReturn = stack
         }
-        //Go to next stack
-        else {
-          counter += 1
-        }
-      }
-      else {
-        counter += 1
       }
     }
-    //return tuple
-    foundAndNum
+    stackToReturn
+
   }
-  
+
   /*
-  //////////////////////////////////////////////////////////////////////////////
-  -------------------- FIND CARD AND GET STACK IN UNCOVERED --------------------
-  //////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
+  ---------------------------------------------------------------
+  -------------------- VERIFICATION FUNCTIONS -------------------
+  ---------------------------------------------------------------
+  ///////////////////////////////////////////////////////////////
 
-  This function takes a card and returns the stack of uncovered cards that 
-  contains that card
-
-  UNUSED
+  Functions that validate/verify things
 
   */
-  def findCardAndGetStackInUncovered(card: Card): Stack[Card] = {
-    var tmpStack = Stack[Card]()
-    for(stack <- uncoveredStacks) {
-      if(stack.contains(card)) {
-        var tmpCard = stack.pop
-        tmpStack.push(tmpCard)
-        if (tmpStack.top == card) {
-          return(tmpStack)
-        }
-      }
-      else {
-        tmpStack
-      }
-    }
-    tmpStack
-  }
 
   /*
   ///////////////////////////////////////////////////////
@@ -1170,9 +1234,11 @@ object main {
   */
   def validateCard(value: Int, suit: String): Boolean = {
     var isCard = true
+    //Check that the value of the card is within the specified bounds
     if(value < 0 || value > 14) {
       isCard = false
     }
+    //Check that the suit of the card is a valid suit
     if(suit.toLowerCase != "s" && suit.toLowerCase != "c" && suit.toLowerCase != "d" && suit.toLowerCase != "h") {
       isCard = false
     }
@@ -1198,27 +1264,6 @@ object main {
   }
 
   /*
-  /////////////////////////////////////////////////////////////////
-  -------------------- GET STACK FROM TOP CARD --------------------
-  /////////////////////////////////////////////////////////////////
-
-  This function takes a card and returns the stack that that card is in
-
-  */
-  def getStackFromCard(targetCard: Card): Stack[Card] = {
-    var stackToReturn = Stack[Card]()
-    for(stack <- allStacks) {
-      for(card <- stack) {
-        if(card.value == targetCard.value && card.suit == targetCard.suit) {
-          stackToReturn = stack
-        }
-      }
-    }
-    stackToReturn
-
-  }
-
-  /*
   ////////////////////////////////////////////////////
   -------------------- CHECK MOVE --------------------
   ////////////////////////////////////////////////////
@@ -1227,8 +1272,11 @@ object main {
 
   */
   def checkMove(card1: Card, card2: Card, location: String): Boolean = {
+    //Check if the card is being moved to a solitaire stack
     if(location.toLowerCase == "s") {
+      //Check if the card values match up accoridng to solitaire rules
       if(card2.value == card1.value + 1) {
+        //Check if the suits match up according to solitaire rules
         if((card1.suit == Suit.Hearts || card1.suit == Suit.Diamonds) && (card2.suit == Suit.Spades || card2.suit == Suit.Clubs)) {
           true
         }
@@ -1246,8 +1294,11 @@ object main {
         false
       }
     }
+    //Check if the card is being moved to an ace stack
     else if (location.toLowerCase == "a") {
+      //Check if the card values match up accoridng to solitaire rules
       if(card1.value == card2.value + 1) {
+        //Check if the suits match up according to solitaire rules
         if(card1.suit == card2.suit) {
           true
         }
@@ -1267,6 +1318,132 @@ object main {
       false
     }
   }
+
+  /*
+  ///////////////////////////////////////////////////////////////
+  -------------------- CHECK IF TOP IS BLANK --------------------
+  ///////////////////////////////////////////////////////////////
+
+  This function takes a stack of cards and returns a boolean of 
+  if the top card is a blank card.
+
+  */
+  def checkIfTopIsBlank(stack: Stack[Card]):Boolean = {
+    //Check the values of the top card
+    if(stack.top.value == -1 && stack.top.suit == Suit.None) {
+      true
+    }
+    else {
+      println("top card of stack is not empty")
+      false
+    }
+  }
+
+  /*
+  /////////////////////////////////////////////////////////
+  ---------------------------------------------------------
+  -------------------- MOVING FUNCTIONS -------------------
+  ---------------------------------------------------------
+  /////////////////////////////////////////////////////////
+
+  Functions that handle moving cards
+
+  */
+
+  /*
+  ///////////////////////////////////////////////////
+  -------------------- MOVE CARD --------------------
+  ///////////////////////////////////////////////////
+
+  This function moves a card from its current position to a new stack
+
+  */
+  def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
+    //Make a temporary card
+    var card: Card = null
+    //Check if the card is being moved to a solitaire stack
+    if (newLocRow.toLowerCase == "s") {
+      //Set the target stack to move the card to
+      val targetStack = uncoveredStacks(newLocCol-1)
+      //Check to make sure that this is a valiud move
+      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s")) {
+        //Check if card is a king and call respective functiomn
+        if(cardToMove.value == 13) {
+          handleKingToEmptyStack(newLocCol)
+          card = cardToMove
+          popCorrectStack(currentCardIndex)
+        }
+        //If the card exists, pop the correct stack with a helper function
+        else if(currentCardIndex != -1) {
+          card = popCorrectStack(currentCardIndex)
+        }
+        //Set the card to the card to move
+        else {
+          card = cardToMove
+        }
+        //Push the card
+        targetStack.push(card)
+      }
+      else {
+        println("Invalid move, please try again: moveCard push new card")
+      }
+    }
+    //Check if the card is being moved to an ace stack
+    else if (newLocRow.toLowerCase == "a") {
+      val targetStack = aceStacks(newLocCol-1)
+      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "a")) {
+          if(currentCardIndex != -1) {
+            card = popCorrectStack(currentCardIndex)
+          }
+          else {
+            card = cardToMove
+          }
+          targetStack.push(card)
+      }
+      else {
+        println("Invalid move, please try again: moveCard push new card")
+      }
+    }
+  }
+  //steps of moving
+  //check size of stack where card is (need card and stack)
+  //if size > 1, moveCardStack (getting all cards below and including that card)
+  //else, call regular move function
+
+
+  /*
+  /////////////////////////////////////////////////////////////
+  -------------------- MOVE MULTIPLE CARDS --------------------
+  /////////////////////////////////////////////////////////////
+
+  This function takes a main card to move, the current stack 
+  that it is in (which contains the other cards to be moved 
+  with it), and the stack to move to and moves the cards.
+
+  */
+  def moveMultipleCards(mainCardToMove: Card, currentStack: Stack[Card], stackToMoveTo: Stack[Card]) = {
+    //Check is the stack has more than 1 card in it
+    if(currentStack.size > 1) {
+      //Get the cards to move with the targetcard and the stack that it is in
+      val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
+      //Move those selected cards to the correct stack
+      stackToMoveTo.pushAll(cardsSelected)
+    }
+    else {
+      println("ERROR IN MOVE MULTIPLE CARDS")
+    }
+  }
+
+  /*
+  ////////////////////////////////////////////////////////////
+  ------------------------------------------------------------
+  -------------------- MOVING HELPER FUNCTIONS ---------------
+  ------------------------------------------------------------
+  ////////////////////////////////////////////////////////////
+
+  Functions that handle searching for/in different things
+
+  */
 
   /*
   ///////////////////////////////////////////////////////////
@@ -1321,80 +1498,6 @@ object main {
   }
 
   /*
-  ///////////////////////////////////////////////////
-  -------------------- MOVE CARD --------------------
-  ///////////////////////////////////////////////////
-
-  This function moves a card from its current position to a new stack
-
-  */
-  def moveCard(cardToMove: Card, currentCardIndex: Int, newLocRow: String, newLocCol: Int) = {
-    var card: Card = null
-    //Push current card onto correct new stack (solitaire row)
-    if (newLocRow.toLowerCase == "s") {
-      val targetStack = uncoveredStacks(newLocCol-1)
-      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "s")) {
-        if(cardToMove.value == 13) {
-          handleKingToEmptyStack(newLocCol)
-          card = cardToMove
-          popCorrectStack(currentCardIndex)
-        }
-        else if(currentCardIndex != -1) {
-          card = popCorrectStack(currentCardIndex)
-        }
-        else {
-          card = cardToMove
-        }
-        targetStack.push(card)
-      }
-      else {
-        println("Invalid move, please try again: moveCard push new card")
-      }
-    }
-    else if (newLocRow.toLowerCase == "a") {
-      val targetStack = aceStacks(newLocCol-1)
-      if(checkMove(Card(cardToMove.value, cardToMove.suit), targetStack.top, "a")) {
-          if(currentCardIndex != -1) {
-            card = popCorrectStack(currentCardIndex)
-          }
-          else {
-            card = cardToMove
-          }
-          targetStack.push(card)
-      }
-      else {
-        println("Invalid move, please try again: moveCard push new card")
-      }
-    }
-  }
-  //steps of moving
-  //check size of stack where card is (need card and stack)
-  //if size > 1, moveCardStack (getting all cards below and including that card)
-  //else, call regular move function
-
-
-  /*
-  /////////////////////////////////////////////////////////////
-  -------------------- MOVE MULTIPLE CARDS --------------------
-  /////////////////////////////////////////////////////////////
-
-  This function takes a main card to move, the current stack 
-  that it is in (which contains the other cards to be moved 
-  with it), and the stack to move to and moves the cards.
-
-  */
-  def moveMultipleCards(mainCardToMove: Card, currentStack: Stack[Card], stackToMoveTo: Stack[Card]) = {
-    if(currentStack.size > 1) {
-      val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
-      stackToMoveTo.pushAll(cardsSelected)
-    }
-    else {
-      println("ERROR IN MOVE MULTIPLE CARDS")
-    }
-  }
-
-
-  /*
   //////////////////////////////////////////////////////////////////
   -------------------- GET SUBSET OF CARD STACK --------------------
   //////////////////////////////////////////////////////////////////
@@ -1405,12 +1508,15 @@ object main {
 
   */
   def getSubsetOfCardStack(targetCard: Card, currentStack: Stack[Card]): Stack[Card] = {
+    //Set temporary stack and temporary card
     val tmpStack = Stack[Card]()
     var card = Card(-1, Suit.None)
+    //While the target card is not equal to the current card
     while(currentStack.top.value != targetCard.value) {
       card = currentStack.pop()
       tmpStack.push(card)
     }
+    //Run one more time to pop the target card
     card = currentStack.pop()
     tmpStack.push(card)
     tmpStack
@@ -1427,10 +1533,13 @@ object main {
 
   */
   def handleKingToEmptyStack(newLocCol: Int) = {
+    //get the stack to check
     val targetStack = uncoveredStacks(newLocCol-1)
+    //check if the stack is empty
     if(targetStack.isEmpty) {
       println("ERROR 1 IN HANDLE KING TO EMPTY STACK")
     }
+    //if the top card is blank
     else if(checkIfTopIsBlank(targetStack)) {
       targetStack.pop()
     }
@@ -1439,25 +1548,16 @@ object main {
     }
 
   }
-
   /*
-  ///////////////////////////////////////////////////////////////
-  -------------------- CHECK IF TOP IS BLANK --------------------
-  ///////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////
+  ------------------------------------------------------------
+  -------------------- INPUT FUNCTIONS -----------------------
+  ------------------------------------------------------------
+  ////////////////////////////////////////////////////////////
 
-  This function takes a stack of cards and returns a boolean of 
-  if the top card is a blank card.
+  Functions that handle input from the user
 
   */
-  def checkIfTopIsBlank(stack: Stack[Card]):Boolean = {
-    if(stack.top.value == -1 && stack.top.suit == Suit.None) {
-      true
-    }
-    else {
-      println("top card of stack is not empty")
-      false
-    }
-  }
   
   /*
   //////////////////////////////////////////////////////
@@ -1468,15 +1568,17 @@ object main {
 
   */
   def handleInput(line: String) = {
-    if(line == "hello") {
-      println("hola")
-    }
-    else if(line.toLowerCase == "help") {
+    //print help commands
+    if(line.toLowerCase == "help") {
       println("Commands:")
-      println("draw -             draws as card from the draw deck and places it face up in the discard deck to be used")
+      println("draw -             draws 1 or 3 cards from the draw deck and places it face up in the discard deck to be used")
+      println()
       println("move __ to __ -    allows you to move a card (KD, AS, 6C, JH, etc) to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move AS to A3\" moves the ace of spades (if it is in play) to the third ace pile. \n \t Example: \"move KD to S4\" moves the king of diamonds (if it is in play) to the fourth solitaire pile.")
+      println()
       println("moveall __ to __ - allows you to move a card (KD, AS, 6C, JH, etc) and any subsequent cards in the pile to a specific pile (A1, S4, A3, S7, etc.) \n \t Example: \"move 10D to S4\" moves the 10 of diamonds (if it is in play) and any cards placed on top of the 10 of diamonds to the fourth solitaire pile. \n")
+      println()
       println("q -                quit the game")
+      println()
     }
     //draws a card from the deck and adds it face up to the discard pile
     else if(line.toLowerCase == "draw")
@@ -1487,6 +1589,7 @@ object main {
         discardStack.clear()
         updateGame()
       }
+      //Check if 3 cards are being flipped and if there are enough cards in the draw stack
       else if(cardsToFlip == 3 && drawStack.length >= 3) {
         var card1 = drawStack.pop
         discardStack.push(card1)
@@ -1496,6 +1599,7 @@ object main {
         discardStack.push(card3)
         updateGame()
       }
+      //Check if 3 cards are being flipped and if there are not enough (2) cards in the draw stack
       else if(cardsToFlip == 3 && drawStack.length == 2) {
         var card1 = drawStack.pop
         discardStack.push(card1)
@@ -1503,23 +1607,23 @@ object main {
         discardStack.push(card2)
         updateGame()
       }
+      //Check if 3 cards are being flipped and if there are not enough (1) cards in the draw stack
       else if(cardsToFlip == 3 && drawStack.length == 1) {
         var card1 = drawStack.pop
         discardStack.push(card1)
         updateGame()
       }
+      //Check if 1 card is being flipped
       else if(cardsToFlip == 1) {
         discardStack.push(drawStack.pop)
         updateGame()
       }
-      //handle drawing a card and placing it face up in the discard pile
-      //println("Discard Stack Length: " + discardStack.size)
       updateGame()
     }
     else if (line.split(" ").length < 4 ) {
       println("That is an invalid command. Type \"help\" for a list and description of valid commands")
     }
-    //handles moving a card by calling multiple functions to convert command to usable data
+    //If the player wants to move multiple cards at once
     else if (line.toLowerCase().contains("moveall")) {
       val lineSubstring = line.split(" ")
       val cardToMove = lineSubstring(1)
@@ -1557,6 +1661,7 @@ object main {
       }
       updateGame()
     }
+    //If the player wants to move one card
     else if(line.toLowerCase().contains("move")) {
       val lineSubstring = line.split(" ")
       val cardToMove = lineSubstring(1)
@@ -1600,8 +1705,6 @@ object main {
           println("That card is not available")
         }
       }
-
-      //Add check for making sure this is a valid card
     }
     //Error catching
     else {
