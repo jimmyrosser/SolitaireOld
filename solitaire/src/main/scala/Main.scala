@@ -1712,3 +1712,9 @@ object main {
     }
   }
 }
+
+//Make a networked interface that stores top scores, lowest moves, points, time, etc
+//Make a database to store player information
+//Make login page that connects with database
+//Figure out how to display card representation in a web interface
+//Push this network to a server (somewhere??? AWS, Heroku, Raspberry Pi)
