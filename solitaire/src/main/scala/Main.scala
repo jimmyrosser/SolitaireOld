@@ -2,55 +2,37 @@ import scala.io.StdIn._
 import scala.collection.mutable.Stack
 
 object main {
-  //Stacks for covered cards
-  var coveredStack2 = Stack[Card]()
-  var coveredStack3 = Stack[Card]()
-  var coveredStack4 = Stack[Card]()
-  var coveredStack5 = Stack[Card]()
-  var coveredStack6 = Stack[Card]()
-  var coveredStack7 = Stack[Card]()
+
+  //var currentGameState = GameState
+
   //List of all coverd card stacks
-  var coveredStacks: List[Stack[Card]] = List(coveredStack2, coveredStack3, coveredStack4, coveredStack5, coveredStack6, coveredStack7)
+  var coveredStacks: List[Stack[Card]] = List(Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card]())
 
-  //Stacks for uncovered cards
-  var uncoveredStack1 = Stack[Card]()
-  var uncoveredStack2 = Stack[Card]()
-  var uncoveredStack3 = Stack[Card]()
-  var uncoveredStack4 = Stack[Card]()
-  var uncoveredStack5 = Stack[Card]()
-  var uncoveredStack6 = Stack[Card]()
-  var uncoveredStack7 = Stack[Card]()
   //List of all uncovered card stacks
-  var uncoveredStacks: List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
+  var uncoveredStacks: List[Stack[Card]] = List(Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card]())
 
-  //Stacks for ace cards
-  var ace1Stack = Stack[Card]()
-  var ace2Stack = Stack[Card]()
-  var ace3Stack = Stack[Card]()
-  var ace4Stack = Stack[Card]()
   //List of all ace card stacks
-  var aceStacks: List[Stack[Card]] = List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
+  var aceStacks: List[Stack[Card]] = List(Stack[Card](), Stack[Card](), Stack[Card](), Stack[Card]())
 
   //All stacks where playable cards could be/moves could be made
-  var allStacks = List[Stack[Card]]()
+  var allStacks: List[Stack[Card]] = uncoveredStacks ++ aceStacks
 
   //Discard and draw stack
-  var discardStack = Stack[Card]()
-  var drawStack = Stack[Card]()
+  val discardStack = Stack[Card]()
+  val drawStack = Stack[Card]()
 
   //Cards to flip per draw
   var cardsToFlip = 1
 
   //Generate and shuffle the deck, then push it all to a stack
-  val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
-  var deckStack: Stack[Card] = Stack[Card]()
+  //val deck = Deck.shuffleDeck(Deck.shuffleDeck(Deck.generateDeck))
+  val deck = Deck.generateDeck
+  val deckStack: Stack[Card] = Stack[Card]()
   deckStack.pushAll(deck)
 
   //List of all the stacks (ace and solitaire) as well as the discard stack
   //Used for searching for cards to move
-  var allStacksAndDiscardStack:List[Stack[Card]] = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
-      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
-
+  var allStacksAndDiscardStack:List[Stack[Card]] = uncoveredStacks ++ aceStacks ++ List(discardStack)
   /*
   //////////////////////////////////////////////
   -------------------- MAIN --------------------
@@ -739,10 +721,9 @@ object main {
 
     //Makes a list of the ace card spots above the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var aceCardList = List[List[String]]()
-    aceCardList = aceCardList :+ convertCardToASCII(ace1Stack.top).split(",").toList
-    aceCardList = aceCardList :+ convertCardToASCII(ace2Stack.top).split(",").toList
-    aceCardList = aceCardList :+ convertCardToASCII(ace3Stack.top).split(",").toList
-    aceCardList = aceCardList :+ convertCardToASCII(ace4Stack.top).split(",").toList
+    for(stack <- aceStacks) {
+      aceCardList = aceCardList :+ convertCardToASCII(stack.top).split(",").toList
+    }
     //Call reformatCardList to arrange the cards horizontally
     var aceCards = reformatCardList(aceCardList)
     //Print the cards
@@ -755,67 +736,21 @@ object main {
 
     //Makes a list of the solitaire spots in the main section of the game. Adds the top card to the list and adds an empty card if there are no cards in the stack
     var cardList = List[List[String]]()
-    //If the first stack is empty, add en empty card
-    if(uncoveredStack1.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack1).split(",").toList
-    }
-    //If the second stack is empty, add an empty card
-    if(uncoveredStack2.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise print the sizes of the stacks above the cards to indicate the number of cards underneath
-    else {
-      println("             " + "    " + convertStackSizeToASCII(coveredStack2.size) 
-            + "    " + convertStackSizeToASCII(coveredStack3.size)
-            + "    " + convertStackSizeToASCII(coveredStack4.size)
-            + "    " + convertStackSizeToASCII(coveredStack5.size)
-            + "    " + convertStackSizeToASCII(coveredStack6.size)
-            + "    " + convertStackSizeToASCII(coveredStack7.size))
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack2).split(",").toList
-    }
-    //If the third stack is empty, add an empty card
-    if(uncoveredStack3.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack 
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack3).split(",").toList
-    }
-    //If the fourth stack is empty, add an empty card
-    if(uncoveredStack4.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack4).split(",").toList
-    }
-    //If the fifth stack is empty, add an empty card
-    if(uncoveredStack5.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack5).split(",").toList
-    }
-    //If the sixth stack is empty, add an empty card
-    if(uncoveredStack6.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack6).split(",").toList
-    }
-    //If the seventh stack is empty, add an empty card
-    if(uncoveredStack7.isEmpty) {
-      cardList = cardList :+ printEmptyCard().split(",").toList
-    }
-    //Otherwise, print the card usng printSinglecardOrStack
-    else {
-      cardList = cardList :+ printSingleCardOrStack(uncoveredStack7).split(",").toList
+    //If the stacks are empty, add an empty card, otherwise, print the single card or the whole stack (if multiple cards are present)
+    for(i <- 0 to 6) {
+      if(uncoveredStacks(i).isEmpty) {
+        cardList = cardList :+ printEmptyCard().split(",").toList
+      }
+      else {
+        if(i == 1) {
+          print("             ")
+          for(stack <- coveredStacks) {
+            print("    " + convertStackSizeToASCII(stack.size))
+          }
+          println()
+        }
+        cardList = cardList :+ printSingleCardOrStack(uncoveredStacks(i)).split(",").toList
+      }
     }
     //Call reformatCardList to arrange the cards horizontally
     var cards = reformatCardList(cardList)
@@ -864,45 +799,20 @@ object main {
 
   */
   def dealGame() = {
-      //add 1 card to first uncovered stack, add 6 cards to next 6 coverd stacks
-      uncoveredStack1.push(deckStack.pop())
-      for(i <- 0 to 5) {
-        coveredStacks(i).push(deckStack.pop())
+    //Loop through the uncovered stacks and add cards to them
+    for(i <- 0 to 6) {
+      uncoveredStacks(i).push(deckStack.pop())
+      //Loop through the covered stacks and add cards to them decreasing as the deal progresses
+      for(j <- i to 5) {
+        coveredStacks(j).push(deckStack.pop())
       }
-
-      //add 1 card to second uncoverd stack, add 5 cards to next 5 covered stacks
-      uncoveredStack2.push(deckStack.pop())
-      for(i <- 1 to 5) {
-        coveredStacks(i).push(deckStack.pop())
-      }
-
-      //add 1 card to third uncoverd stack, add 4 cards to next 4 covered stacks
-      uncoveredStack3.push(deckStack.pop())
-      for(i <- 2 to 5) {
-        coveredStacks(i).push(deckStack.pop())
-      }
-
-      //add 1 card to fourth uncoverd stack, add 3 cards to next 3 covered stacks
-      uncoveredStack4.push(deckStack.pop())
-      for(i <- 3 to 5) {
-        coveredStacks(i).push(deckStack.pop())
-      }
-      //add 1 card to fifth uncoverd stack, add 2 cards to next 2 covered stacks
-      uncoveredStack5.push(deckStack.pop())
-      for(i <- 4 to 5) {
-        coveredStacks(i).push(deckStack.pop())
-      }
-      //add 1 card to sixth uncoverd stack, add 1 cards to next 1 covered stacks
-      uncoveredStack6.push(deckStack.pop())
-      coveredStack7.push(deckStack.pop())
-      //add 1 card to seventh uncoverd stack, add rest of cards to draw stack
-      uncoveredStack7.push(deckStack.pop())
+    }
       
-      //pushes the rest of the deck to the draw pile
-      drawStack.pushAll(deckStack)
+    //pushes the rest of the deck to the draw pile
+    drawStack.pushAll(deckStack)
 
-      //update lists of stacks to reflect the delt cards
-      rebuildStacks()
+    //update lists of stacks to reflect the delt cards
+    rebuildStacks()
   }
 
   /*
@@ -976,11 +886,21 @@ object main {
         println(s"Goodbye $name!")
         running = false
       }
-      if(ace1Stack.size == 14 && ace2Stack.size == 14 && ace3Stack.size == 14 && ace4Stack.size == 14) {
+      if(hasWon()) {
         println("Congratulations! You won Solitaire!")
         running = false
       }
     }
+  }
+
+  def hasWon(): Boolean = {
+    var hasWon = true
+    for(stack <- aceStacks) {
+      if(stack.size != 14) {
+        hasWon = false
+      }
+    }
+    hasWon
   }
   /*
   ////////////////////////////////////////////////////////////
@@ -1041,79 +961,29 @@ object main {
   def fixStacksAfterMove() = {
     //Set temporary card variable
     var card: Card = null
+
     //If the first uncovered stack is empty, push on a blank card
-    if(uncoveredStack1.isEmpty) {
-      uncoveredStack1.push(Card(-1, Suit.None))
+    if(uncoveredStacks(0).isEmpty) {
+      uncoveredStacks(0).push(Card(-1, Suit.None))
     }
-    //If the second uncovered stack is empty and the second covered stack is empty, push on a blank card
-    if(uncoveredStack2.isEmpty && coveredStack2.isEmpty) {
-      uncoveredStack2.push(Card(-1, Suit.None))
+    //If the rest of the solitaire stacks are empty, push on a blank card
+    for(i <- 1 to 6) {
+      if(uncoveredStacks(i).isEmpty && coveredStacks(i-1).isEmpty) {
+        //Push on a blank card
+        uncoveredStacks(i).push(Card(-1, Suit.None))
+      }
+      else if(uncoveredStacks(i).isEmpty && !coveredStacks(i-1).isEmpty) {
+        //Pop the card from the covered stack and push it to the uncovered stack
+        card = coveredStacks(i-1).pop()
+        uncoveredStacks(i).push(card)
+      }
     }
-    //If the second uncovered stack is empty and the covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack2.isEmpty && !(coveredStack2.isEmpty)) {
-      card = coveredStack2.pop()
-      uncoveredStack2.push(card)
-    }
-    //If the third uncovered stack is empty and the third covered stack is empty, push on a blank card
-    if(uncoveredStack3.isEmpty && coveredStack3.isEmpty) {
-      uncoveredStack3.push(Card(-1, Suit.None))
-    }
-    //If the third uncovered stack is empty and the third covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack3.isEmpty && !(coveredStack3.isEmpty)) {
-      card = coveredStack3.pop()
-      uncoveredStack3.push(card)
-    }
-    //If the fourth uncovered stack is empty and the fourth covered stack is empty, push on a blank card
-    if(uncoveredStack4.isEmpty && coveredStack4.isEmpty) {
-      uncoveredStack4.push(Card(-1, Suit.None))
-    }
-    //If the fourth uncovered stack is empty and the fourth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack4.isEmpty && !(coveredStack4.isEmpty)) {
-      card = coveredStack4.pop()
-      uncoveredStack4.push(card)
-    }
-    //If the fifth uncovered stack is empty and the fifth covered stack is empty, push on a blank card
-    if(uncoveredStack5.isEmpty && coveredStack5.isEmpty) {
-      uncoveredStack5.push(Card(-1, Suit.None))
-    }
-    //If the fifth uncovered stack is empty and the fifth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack5.isEmpty && !(coveredStack5.isEmpty)) {
-      card = coveredStack5.pop()
-      uncoveredStack5.push(card)
-    }
-    //If the sixth uncovered stack is empty and the sixth covered stack is empty, push on a blank card
-    if(uncoveredStack6.isEmpty && coveredStack6.isEmpty) {
-      uncoveredStack6.push(Card(-1, Suit.None))
-    }
-    //If the sixth uncovered stack is empty and the sixth covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack6.isEmpty && !(coveredStack6.isEmpty)) {
-      card = coveredStack6.pop()
-      uncoveredStack6.push(card)
-    }
-    //If the seventh uncovered stack is empty and the seventh covered stack is empty, push on a blank card
-    if(uncoveredStack7.isEmpty && coveredStack7.isEmpty) {
-      uncoveredStack7.push(Card(-1, Suit.None))
-    }
-    //If the seventh uncovered stack is empty and the seventh covered stack is not empty, prop from covered stack and push it onto the uncovered stack
-    else if(uncoveredStack7.isEmpty && !(coveredStack7.isEmpty)) {
-      card = coveredStack7.pop()
-      uncoveredStack7.push(card)
-    }
-    //If the first ace stack is empty, push on a blank card
-    if(ace1Stack.isEmpty) {
-      ace1Stack.push(Card(-1, Suit.None))
-    }
-    //If the second ace stack is empty, push on a blank card
-    if(ace2Stack.isEmpty) {
-      ace2Stack.push(Card(-1, Suit.None))
-    }
-    //If the third ace stack is empty, push on a blank card
-    if(ace3Stack.isEmpty) {
-      ace3Stack.push(Card(-1, Suit.None))
-    }
-    //If the fourth ace stack is empty, push on a blank card
-    if(ace4Stack.isEmpty) {
-      ace4Stack.push(Card(-1, Suit.None))
+
+    //If the ace stacks are empty, push on a blank card
+    for(i <- 0 to 3) {
+      if(aceStacks(i).isEmpty) {
+        aceStacks(i).push(Card(-1, Suit.None))
+      }
     }
   }
 
@@ -1125,18 +995,12 @@ object main {
   This function rebuilds the lists of stacks after stacks have been updated
 
   */
+ 
   def rebuildStacks(): Unit = {
-    //Rebuild uncoveredStack collection
-    uncoveredStacks = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7)
-    //Rebuild coveredStack collection
-    coveredStacks = List(coveredStack2, coveredStack3, coveredStack4, coveredStack5, coveredStack6, coveredStack7)
-    //Rebuild aceStack collection
-    aceStacks =  List(ace1Stack, ace2Stack, ace3Stack, ace4Stack)
     //Rebuild allStack collection
     allStacks = uncoveredStacks ++ aceStacks
     //Rebuild allStacksAndDiscardStack collection
-    allStacksAndDiscardStack = List(uncoveredStack1, uncoveredStack2, uncoveredStack3, uncoveredStack4, uncoveredStack5, uncoveredStack6, uncoveredStack7, 
-      ace1Stack, ace2Stack, ace3Stack, ace4Stack, discardStack)
+    allStacksAndDiscardStack = uncoveredStacks ++ aceStacks ++ List(discardStack)
   }
 
   /*
@@ -1405,10 +1269,6 @@ object main {
       }
     }
   }
-  //steps of moving
-  //check size of stack where card is (need card and stack)
-  //if size > 1, moveCardStack (getting all cards below and including that card)
-  //else, call regular move function
 
 
   /*
@@ -1422,16 +1282,32 @@ object main {
 
   */
   def moveMultipleCards(mainCardToMove: Card, currentStack: Stack[Card], stackToMoveTo: Stack[Card]) = {
-    //Check is the stack has more than 1 card in it
-    if(currentStack.size > 1) {
-      //Get the cards to move with the targetcard and the stack that it is in
-      val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
-      //Move those selected cards to the correct stack
-      stackToMoveTo.pushAll(cardsSelected)
+    if(stackToMoveTo.isEmpty || checkIfTopIsBlank(stackToMoveTo)) {
+      if(currentStack.size > 1) {
+        //Get the cards to move with the targetcard and the stack that it is in
+        val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
+        //Move those selected cards to the correct stack
+        stackToMoveTo.pushAll(cardsSelected)
+      }
+      else {
+        println("Please use the move command to accomplish this")
+      }
+    }
+    else if(!checkIfTopIsBlank(stackToMoveTo) && checkMove(mainCardToMove, stackToMoveTo.top, "s")) {
+      //Check is the stack has more than 1 card in it
+      if(currentStack.size > 1) {
+        //Get the cards to move with the targetcard and the stack that it is in
+        val cardsSelected = getSubsetOfCardStack(mainCardToMove, currentStack)
+        //Move those selected cards to the correct stack
+        stackToMoveTo.pushAll(cardsSelected)
+      }
+      else {
+        println("Please use the move command to accomplish this")
+      }
     }
     else {
-      println("ERROR IN MOVE MULTIPLE CARDS")
-    }
+        println("That is an invalid move")
+      }
   }
 
   /*
@@ -1455,44 +1331,18 @@ object main {
   */
   def popCorrectStack(currentCardIndex: Int): Card = {
     var card: Card = null
-    if(currentCardIndex == 0) {
-      card = uncoveredStack1.pop
-    }
-    else if (currentCardIndex == 1) {
-      card = uncoveredStack2.pop
-    }
-    else if (currentCardIndex == 2) {
-      card = uncoveredStack3.pop
-    }
-    else if (currentCardIndex == 3) {
-      card = uncoveredStack4.pop
-    }
-    else if (currentCardIndex == 4) {
-      card = uncoveredStack5.pop
-    }
-    else if (currentCardIndex == 5) {
-      card = uncoveredStack6.pop
-    }
-    else if (currentCardIndex == 6) {
-      card = uncoveredStack7.pop
-    }
-    else if (currentCardIndex == 7) {
-      card = ace1Stack.pop
-    }
-    else if (currentCardIndex == 8) {
-      card = ace2Stack.pop
-    }
-    else if (currentCardIndex == 9) {
-      card = ace3Stack.pop
-    }
-    else if (currentCardIndex == 10) {
-      card = ace4Stack.pop
+    if(currentCardIndex < 7) {
+      card = uncoveredStacks(currentCardIndex).pop()
     }
     else if (currentCardIndex == 11) {
       card = discardStack.pop
     }
-    else {
-      println("ERROR IN POPCORRECTSTACK LAST ELSE")
+    else if (currentCardIndex > 7) {
+      card = aceStacks(currentCardIndex-7).pop()
+    }
+
+    if(card == null) {
+      println("ERROR IN POPCORRECTSTACK")
     }
     card
   }
@@ -1542,6 +1392,7 @@ object main {
     //if the top card is blank
     else if(checkIfTopIsBlank(targetStack)) {
       targetStack.pop()
+
     }
     else {
       println("Error 2 in handleKingToEmptyStack")
@@ -1639,21 +1490,18 @@ object main {
       if(cardToMove.size == 3 && (validateCard(convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString), cardToMove(2).toString))) {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString)
         cardToMoveSuit = cardToMove(2).toString
-        currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
         validCommand = true
       }
       else if ((validateCard(convertValueFromCard(cardToMove(0).toString), cardToMove(1).toString))) {
         cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
         cardToMoveSuit = cardToMove(1).toString
-        currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
-        stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
-        stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
-        if(cardToMoveValue == 13 && checkIfTopIsBlank(stackToMoveTo)) {
-          stackToMoveTo.pop
-        }
         validCommand = true
+      }
+      currentStack = getStackFromCard(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)))
+      stackToMoveToColumn = convertValueFromCard(stackToMoveToString(1).toString)
+      stackToMoveTo = uncoveredStacks(stackToMoveToColumn-1)
+      if(cardToMoveValue == 13 && checkIfTopIsBlank(stackToMoveTo)) {
+          stackToMoveTo.pop
       }
       if (validCommand) {
         moveMultipleCards(Card(cardToMoveValue, convertSuitForCard(cardToMoveSuit)), currentStack, stackToMoveTo)
@@ -1679,8 +1527,6 @@ object main {
         {
           cardToMoveValue = convertValueFromCard(cardToMove(0).toString + cardToMove(1).toString)
           cardToMoveSuit = cardToMove(2).toString
-          stackToMoveToRow = stackToMoveTo(0).toString
-          stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
           validCommand = true
         }
       //If the card is anything except a 10  
@@ -1689,10 +1535,10 @@ object main {
         {
           cardToMoveValue = convertValueFromCard(cardToMove(0).toString)
           cardToMoveSuit = cardToMove(1).toString
-          stackToMoveToRow = stackToMoveTo(0).toString
-          stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
           validCommand = true
         }
+      stackToMoveToRow = stackToMoveTo(0).toString
+      stackToMoveToColumn = convertValueFromCard(stackToMoveTo(1).toString)
       if (validCommand) {
         //check if card is actually in play
         val isCardInPlay = findCardOnTop(cardToMoveValue, cardToMoveSuit)

@@ -1,0 +1,18 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(90911827-a06a-48b8-86b0-fd5f9099b7a2), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@36d39655, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\target\scala-3.0.2\classes ...[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m-- Warning: C:\Users\Jimmy Rosser\VSCodeProjects\Solitaire\solitaire\src\main\scala\Main.scala:1540:8 [0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m[33m1540 |[0m        stackToMoveToRow = stackToMoveTo([31m0[0m).toString[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |        [33m^[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |  Line is indented too far to the right, or a `{` is missing before:[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |  {[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |    cardToMoveValue = convertValueFromCard(cardToMove(0).toString)[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |    cardToMoveSuit = cardToMove(1).toString[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |    validCommand = [31mtrue[0m[0m
+[0m[[0m[33mwarn[0m] [0m[0m     |  }[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 20 s, completed Oct 24, 2021, 8:57:33 PM[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m
